@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import {
   AppBar,
   Box,
@@ -16,12 +17,17 @@ import {
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Logout from "@mui/icons-material/Logout";
+import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
+import { selectRole } from "../../app/slices/userSlice";
+import { roles } from "../../roles";
 
 const pages = ["PC parts", "Build PC"];
 
 function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const userRole = useSelector(selectRole);
+
   const isOpen = Boolean(anchorEl);
 
   const handleMenu = (event) => {
@@ -101,17 +107,30 @@ function Header() {
                 open={isOpen}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>
-                  <Avatar sx={{ width: 32, height: 32, ml: -0.5, mr: 1 }} /> My
-                  account
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleClose}>
-                  <ListItemIcon>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  Logout
-                </MenuItem>
+                {userRole === roles.GUEST ? (
+                  <>
+                    <MenuItem onClick={handleClose}>
+                      <ListItemIcon>
+                        <Login fontSize="small" />
+                      </ListItemIcon>
+                      Login
+                    </MenuItem>
+                  </>
+                ) : (
+                  <>
+                    <MenuItem onClick={handleClose}>
+                      <Avatar sx={{ width: 32, height: 32, ml: -0.5, mr: 1 }} />{" "}
+                      My account
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleClose}>
+                      <ListItemIcon>
+                        <Logout fontSize="small" />
+                      </ListItemIcon>
+                      Logout
+                    </MenuItem>
+                  </>
+                )}
               </Menu>
             </div>
           </Box>
