@@ -1,15 +1,17 @@
-import React from "react";
+// import { Routes, Route } from "react-router-dom";
+import * as React from "react";
+import { Container, Box } from "@mui/material";
+import Header from "./components/header/Header";
 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-
-  return <p>{!data ? "Loading..." : data}</p>;
+  return (
+    <Box>
+      <Header />
+      <Container>
+        <p>sveiki</p>
+      </Container>
+    </Box>
+  );
 }
 
 export default App;
