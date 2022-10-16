@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -8,11 +9,13 @@ import {
   IconButton,
   Badge,
   Menu,
-  MenuItem,
+  ListItem,
   ListItemIcon,
   Avatar,
   Divider,
   Button,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -21,10 +24,12 @@ import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
+import { Outlet } from "react-router-dom";
 
 const pages = ["PC parts", "Build PC"];
 
 function Header() {
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const userRole = useSelector(selectRole);
 
@@ -39,7 +44,7 @@ function Header() {
   };
 
   return (
-    <Box>
+    <>
       <AppBar position="static">
         <Toolbar>
           <DeveloperBoardIcon
@@ -109,26 +114,26 @@ function Header() {
               >
                 {userRole === roles.GUEST ? (
                   <>
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
+                    <ListItemButton onClick={() => navigate("/login")}>
+                      <ListItemIcon sx={{ minWidth: "36px" }}>
                         <Login fontSize="small" />
                       </ListItemIcon>
-                      Login
-                    </MenuItem>
+                      <ListItemText primary="Login" />
+                    </ListItemButton>
                   </>
                 ) : (
                   <>
-                    <MenuItem onClick={handleClose}>
+                    <ListItem onClick={handleClose}>
                       <Avatar sx={{ width: 32, height: 32, ml: -0.5, mr: 1 }} />{" "}
                       My account
-                    </MenuItem>
+                    </ListItem>
                     <Divider />
-                    <MenuItem onClick={handleClose}>
+                    <ListItem onClick={handleClose}>
                       <ListItemIcon>
                         <Logout fontSize="small" />
                       </ListItemIcon>
                       Logout
-                    </MenuItem>
+                    </ListItem>
                   </>
                 )}
               </Menu>
@@ -136,7 +141,8 @@ function Header() {
           </Box>
         </Toolbar>
       </AppBar>
-    </Box>
+      <Outlet />
+    </>
   );
 }
 
