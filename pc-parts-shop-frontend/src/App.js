@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Container } from "@mui/material";
-import Header from "./components/header/Header";
+import Header from "./components/Header/Header";
 import { Routes, Route } from "react-router-dom";
-import Login from "./components/login/Login";
-import Signup from "./components/signup/Signup";
+import Login from "./components/Authentication/Login";
+import Signup from "./components/Authentication/Signup";
 
 function App() {
   return (

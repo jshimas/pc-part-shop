@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { selectRole } from "../../app/slices/userSlice";
+import { roles } from "../../roles";
 import { useNavigate } from "react-router-dom";
 import {
   AppBar,
@@ -22,8 +24,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
-import { selectRole } from "../../app/slices/userSlice";
-import { roles } from "../../roles";
 import { Outlet } from "react-router-dom";
 
 const pages = ["PC parts", "Build PC"];
