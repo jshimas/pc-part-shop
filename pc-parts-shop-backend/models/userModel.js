@@ -1,8 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const AppError = require('../utils/appError');
-
-const sequelize = require('../db/config');
+const sequelize = require('./index');
 
 class User extends Model {
   async isCorrectPassword(candidatePassword) {
