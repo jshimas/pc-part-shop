@@ -1,33 +1,44 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class ExtrnalMemory extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class ExtrnalMemory extends Model {
+    static associate(models) {
+      this.hasMany(models.Part, {
+        foreignKey: 'derivedPartId',
+        constraints: false,
+        scope: {
+          derivedPartType: 'ExtrnalMemory',
+        },
+      });
+    }
+  }
 
-ExtrnalMemory.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  ExtrnalMemory.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      readSpeed: {
+        type: DataTypes.INTEGER,
+        //   allowNull: false,
+      },
+      writeSpeed: {
+        type: DataTypes.INTEGER,
+        //   allowNull: false,
+      },
+      capacity: {
+        type: DataTypes.INTEGER,
+        //   allowNull: false,
+      },
+      connectorType: {
+        type: DataTypes.STRING,
+        //   allowNull: false,
+      },
     },
-    readSpeed: {
-      type: DataTypes.INTEGER,
-      //   allowNull: false,
-    },
-    writeSpeed: {
-      type: DataTypes.INTEGER,
-      //   allowNull: false,
-    },
-    capacity: {
-      type: DataTypes.INTEGER,
-      //   allowNull: false,
-    },
-    connectorType: {
-      type: DataTypes.STRING,
-      //   allowNull: false,
-    },
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = ExtrnalMemory;
+  return ExtrnalMemory;
+};

@@ -1,18 +1,29 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class Cooler extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class Cooler extends Model {
+    static associate(models) {
+      this.hasMany(models.Part, {
+        foreignKey: 'derivedPartId',
+        constraints: false,
+        scope: {
+          derivedPartType: 'Cooler',
+        },
+      });
+    }
+  }
 
-Cooler.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  Cooler.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      height: DataTypes.FLOAT,
     },
-    height: DataTypes.FLOAT,
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = Cooler;
+  return Cooler;
+};

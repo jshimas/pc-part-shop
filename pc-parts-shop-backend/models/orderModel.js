@@ -1,32 +1,39 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class Order extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class Order extends Model {
+    static associations(models) {
+      this.belongsTo(models.User);
+      this.belongsTo(models.DeliveryAddress);
+      this.hasMany(models.OrderItem);
+    }
+  }
 
-Order.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  Order.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      paymentDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      shippingDate: DataTypes.DATE,
+      deliveryDate: DataTypes.DATE,
+      totalPrice: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.ENUM,
+        values: ['shipped', 'delivered', 'new', 'hold', 'cancel'],
+      },
+      details: DataTypes.STRING,
     },
-    paymentDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    shippingDate: DataTypes.DATE,
-    deliveryDate: DataTypes.DATE,
-    totalPrice: {
-      type: DataTypes.DECIMAL,
-      allowNull: false,
-    },
-    status: {
-      type: DataTypes.ENUM,
-      values: ['shipped', 'delivered', 'new', 'hold', 'cancel'],
-    },
-    details: DataTypes.STRING,
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = Order;
+  return Order;
+};

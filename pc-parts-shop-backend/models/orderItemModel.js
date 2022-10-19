@@ -1,21 +1,27 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class OrderItem extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class OrderItem extends Model {
+    static associations(models) {
+      this.belongsTo(models.Order);
+      this.belongsTo(models.Part);
+    }
+  }
 
-OrderItem.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  OrderItem.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    quantity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = OrderItem;
+  return OrderItem;
+};

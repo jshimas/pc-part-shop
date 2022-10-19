@@ -1,21 +1,32 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class PSU extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class PSU extends Model {
+    static associations(models) {
+      this.hasMany(models.Part, {
+        foreignKey: 'derivedPartId',
+        constraints: false,
+        scope: {
+          derivedPartType: 'PSU',
+        },
+      });
+    }
+  }
 
-PSU.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  PSU.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      powerCapacity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
-    powerCapacity: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = PSU;
+  return PSU;
+};

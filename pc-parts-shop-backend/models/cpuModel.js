@@ -1,24 +1,35 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class CPU extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class CPU extends Model {
+    static associate(models) {
+      this.hasMany(models.Part, {
+        foreignKey: 'derivedPartId',
+        constraints: false,
+        scope: {
+          derivedPartType: 'CPU',
+        },
+      });
+    }
+  }
 
-CPU.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  CPU.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      socketStandard: {
+        type: DataTypes.STRING,
+        //   allowNull: false,
+      },
+      frequancy: DataTypes.INTEGER,
+      coreQuantity: DataTypes.INTEGER,
+      threadQuantity: DataTypes.INTEGER,
     },
-    socketStandard: {
-      type: DataTypes.STRING,
-      //   allowNull: false,
-    },
-    frequancy: DataTypes.INTEGER,
-    coreQuantity: DataTypes.INTEGER,
-    threadQuantity: DataTypes.INTEGER,
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = CPU;
+  return CPU;
+};

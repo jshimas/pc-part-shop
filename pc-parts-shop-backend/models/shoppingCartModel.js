@@ -1,17 +1,23 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class ShoppingCart extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class ShoppingCart extends Model {
+    static associations(models) {
+      this.hasMany(models.OrderItem);
+      this.belongsTo(models.User);
+    }
+  }
 
-ShoppingCart.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  ShoppingCart.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     },
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = ShoppingCart;
+  return ShoppingCart;
+};

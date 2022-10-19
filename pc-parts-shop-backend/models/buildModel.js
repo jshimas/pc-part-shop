@@ -1,21 +1,27 @@
-const { DataTypes, Model } = require('sequelize');
-const sequelize = require('./index');
+const { Model } = require('sequelize');
 
-class Build extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class Build extends Model {
+    static associate(models) {
+      this.hasMany(models.Part);
+      this.belongsTo(models.User);
+    }
+  }
 
-Build.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+  Build.init(
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  },
-  { sequelize }
-);
+    { sequelize }
+  );
 
-module.exports = Build;
+  return Build;
+};
