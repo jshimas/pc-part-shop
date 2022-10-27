@@ -4,15 +4,18 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -36,6 +39,13 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Button
+        startIcon={<ArrowBackRoundedIcon />}
+        onClick={() => navigate("/")}
+        sx={{ m: 2 }}
+      >
+        To Home Page
+      </Button>
       <Container component="main" maxWidth="xs">
         <Box
           sx={{

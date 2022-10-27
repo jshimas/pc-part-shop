@@ -26,7 +26,7 @@ import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
 import { Outlet } from "react-router-dom";
 
-const pages = ["PC parts", "Build PC"];
+const pages = ["Parts", "Builds"];
 
 function Header() {
   const navigate = useNavigate();
@@ -47,29 +47,38 @@ function Header() {
     <>
       <AppBar position="static">
         <Toolbar>
-          <DeveloperBoardIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1, fontSize: 40 }}
-          />
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
+          <Box
+            onClick={() => navigate("/")}
             sx={{
+              display: { md: "flex" },
+              alignItems: "center",
               mr: 8,
-              align: "justify",
-              fontWeight: 700,
-              letterSpacing: ".2rem",
-              display: { xs: "none", sm: "block" },
+              "&:hover": {
+                cursor: "pointer",
+              },
             }}
           >
-            PC PARTS SHOP
-          </Typography>
-
+            <DeveloperBoardIcon sx={{ mr: 1, fontSize: 40 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                align: "justify",
+                fontWeight: 700,
+                letterSpacing: ".2rem",
+                display: { xs: "none", sm: "block" },
+              }}
+            >
+              PC PARTS SHOP
+            </Typography>
+          </Box>
           <Box
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 3 }}
           >
             {pages.map((page) => (
               <Button
+                onClick={() => navigate(`/${page.toLocaleLowerCase()}`)}
                 key={page}
                 sx={{ my: 1, color: "white", display: "block" }}
               >
@@ -79,7 +88,11 @@ function Header() {
           </Box>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" color="inherit">
+            <IconButton
+              size="large"
+              color="inherit"
+              onClick={() => navigate("/cart")}
+            >
               <Badge badgeContent={0} color="error">
                 <ShoppingCartIcon />
               </Badge>
@@ -141,7 +154,6 @@ function Header() {
           </Box>
         </Toolbar>
       </AppBar>
-      <Outlet />
     </>
   );
 }
