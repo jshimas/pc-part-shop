@@ -1,0 +1,17 @@
+.main-header {
+  border-bottom: 1px solid #bbb;
+  margin: 32px 0px;
+  padding-bottom: 12px;
+  font-size: 36px;
+}
+
+.middle-section {
+  display: flex;
+  gap: 24px;
+}
+
+.filter {
+  font-size: 18px;
+  background-color: #2976fd;
+  padding: 24px;
+}

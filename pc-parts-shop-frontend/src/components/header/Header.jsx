@@ -24,9 +24,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
-import { Outlet } from "react-router-dom";
 
-const pages = ["Parts", "Builds"];
+const pages = ["parts", "completed builds", "pc builder"];
+const pageLinks = ["parts", "builds", "builds/new"];
 
 function Header() {
   const navigate = useNavigate();
@@ -76,9 +76,9 @@ function Header() {
           <Box
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 3 }}
           >
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <Button
-                onClick={() => navigate(`/${page.toLocaleLowerCase()}`)}
+                onClick={() => navigate(`/${pageLinks[index]}`)}
                 key={page}
                 sx={{ my: 1, color: "white", display: "block" }}
               >

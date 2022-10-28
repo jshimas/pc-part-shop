@@ -1,0 +1,13 @@
+.grid-item {
+  padding: 12px;
+  border: 1px solid #bbb;
+  min-height: 300px;
+  min-width: 300px;
+}
+
+.grid-item:hover {
+  /* transform: scale(1.05); */
+  cursor: pointer;
+  outline: 3px solid #2976fd;
+  transition: 0.1s all;
+}

@@ -1,5 +1,4 @@
 import * as React from "react";
-import Header from "./components/Header/Header";
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Authentication/Login";
 import Signup from "./pages/Authentication/Signup";
@@ -12,6 +11,8 @@ import ShoppingCartPage from "./pages/ShoppingCartPage/ShoppingCartPage";
 import PaymentPage from "./pages/ShoppingCartPage/PaymentPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Main from "./components/Main/Main";
+import PartAddPage from "./pages/PartAddPage/PartAddPage";
+import BuildAddPage from "./pages/BuildAddPage/BuildAddPage";
 
 function App() {
   return (
@@ -19,12 +20,16 @@ function App() {
       <Route element={<Main />}>
         <Route path="/" element={<HomePage />} />
 
-        <Route path="parts" element={<PartListPage />}>
-          <Route path=":partId" element={<PartPage />} />
+        <Route path="parts">
+          <Route index element={<PartListPage />} />
+          <Route path=":id" element={<PartPage />} />
+          <Route path="new" element={<PartAddPage />} />
         </Route>
 
-        <Route path="builds" element={<BuildListPage />}>
-          <Route path=":buildId" element={<BuildPage />} />
+        <Route path="builds">
+          <Route index element={<BuildListPage />} />
+          <Route path=":id" element={<BuildPage />} />
+          <Route path="new" element={<BuildAddPage />} />
         </Route>
 
         <Route path="cart" element={<ShoppingCartPage />} />
