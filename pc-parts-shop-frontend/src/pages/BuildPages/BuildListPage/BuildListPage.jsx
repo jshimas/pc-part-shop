@@ -1,5 +1,5 @@
 import * as React from "react";
-import BuildListGrid from "../../components/BuildListGrid/BuildListGrid";
+import BuildListGrid from "./../../../components/BuildListGrid/BuildListGrid";
 import "./BuildListPageStyles.css";
 
 export default function BuildListPage() {

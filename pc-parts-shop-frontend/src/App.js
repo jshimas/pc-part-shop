@@ -3,16 +3,16 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Authentication/Login";
 import Signup from "./pages/Authentication/Signup";
 import HomePage from "./pages/HomePage/HomePage";
-import PartListPage from "./pages/PartListPage/PartListPage";
-import PartPage from "./pages/PartPage/PartPage";
-import BuildListPage from "./pages/BuildListPage/BuildListPage";
-import BuildPage from "./pages/BuildPage/BuildPage";
+import PartListPage from "./pages/PartPages/PartListPage/PartsListPage";
+import PartPage from "./pages/PartPages/PartPage/PartPage";
+import PartAddPage from "./pages/PartPages/PartAddPage/PartAddPage";
+import BuildListPage from "./pages/BuildPages/BuildListPage/BuildListPage";
+import BuildPage from "./pages/BuildPages/BuildPage/BuildPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage/ShoppingCartPage";
 import PaymentPage from "./pages/ShoppingCartPage/PaymentPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Main from "./components/Main/Main";
-import PartAddPage from "./pages/PartAddPage/PartAddPage";
-import BuildAddPage from "./pages/BuildAddPage/BuildAddPage";
+import BuildAddPage from "./pages/BuildPages/BuildAddPage/BuildAddPage";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
       <Route element={<Main />}>
         <Route path="/" element={<HomePage />} />
 
-        <Route path="parts">
+        <Route path="parts/:type">
           <Route index element={<PartListPage />} />
           <Route path=":id" element={<PartPage />} />
           <Route path="new" element={<PartAddPage />} />

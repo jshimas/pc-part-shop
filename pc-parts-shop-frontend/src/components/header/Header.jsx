@@ -11,36 +11,73 @@ import {
   IconButton,
   Badge,
   Menu,
-  ListItem,
   ListItemIcon,
-  Avatar,
   Divider,
   Button,
   ListItemButton,
   ListItemText,
+  MenuItem,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
+import { AccountBox } from "@mui/icons-material";
 
-const pages = ["parts", "completed builds", "pc builder"];
-const pageLinks = ["parts", "builds", "builds/new"];
+const pages = [
+  { name: "completed builds", link: "builds" },
+  { name: "pc builder", link: "builds/new" },
+];
+
+const parts = [
+  {
+    name: "CPUs",
+    link: "parts/cpu",
+  },
+  {
+    name: "Motherboards",
+    link: "parts/motherboard",
+  },
+  {
+    name: "Memory",
+    link: "parts/memory",
+  },
+  {
+    name: "Storage",
+    link: "parts/storage",
+  },
+  {
+    name: "Video cards",
+    link: "parts/video-card",
+  },
+];
 
 function Header() {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState(null);
   const userRole = useSelector(selectRole);
 
-  const isOpen = Boolean(anchorEl);
+  const [anchorElProfileMenu, setAnchorElProfileMenu] = React.useState(null);
+  const [anchorElPartsMenu, setAnchorElPartsMenu] = React.useState(null);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const isProfileMenuOpen = Boolean(anchorElProfileMenu);
+  const isPartsMenuOpen = Boolean(anchorElPartsMenu);
+
+  const handlePartsMenuClick = (event) => {
+    setAnchorElPartsMenu(event.currentTarget);
+  };
+  const handlePartsMenuClose = () => {
+    setAnchorElPartsMenu(null);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const handleProfileMenu = (event) => {
+    setAnchorElProfileMenu(event.currentTarget);
+  };
+
+  const handleProfileClose = () => {
+    setAnchorElProfileMenu(null);
   };
 
   return (
@@ -76,13 +113,55 @@ function Header() {
           <Box
             sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 3 }}
           >
+            <div>
+              <Button
+                id="parts-button"
+                endIcon={
+                  isPartsMenuOpen ? (
+                    <KeyboardArrowUpIcon />
+                  ) : (
+                    <KeyboardArrowDownIcon />
+                  )
+                }
+                sx={{ my: 1, color: "white" }}
+                aria-controls={isPartsMenuOpen ? "parts-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={isPartsMenuOpen ? "true" : undefined}
+                onClick={handlePartsMenuClick}
+              >
+                Parts
+              </Button>
+              <Menu
+                id="parts-menu"
+                anchorEl={anchorElPartsMenu}
+                open={isPartsMenuOpen}
+                onClose={handlePartsMenuClose}
+                MenuListProps={{
+                  "aria-labelledby": "parts-button",
+                }}
+              >
+                {parts.map((part) => (
+                  <ListItemButton
+                    onClick={
+                      handlePartsMenuClose &&
+                      function () {
+                        navigate(`/${part.link}`);
+                      }
+                    }
+                  >
+                    {part.name}
+                  </ListItemButton>
+                ))}
+              </Menu>
+            </div>
+
             {pages.map((page, index) => (
               <Button
-                onClick={() => navigate(`/${pageLinks[index]}`)}
+                onClick={() => navigate(`/${page.link}`)}
                 key={page}
                 sx={{ my: 1, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
@@ -105,14 +184,14 @@ function Header() {
                 aria-label="account of current user"
                 aria-controls="acc-menu-header"
                 aria-haspopup="true"
-                onClick={handleMenu}
+                onClick={handleProfileMenu}
                 color="inherit"
               >
                 <AccountCircleIcon />
               </IconButton>
               <Menu
                 id="acc-menu-header"
-                anchorEl={anchorEl}
+                anchorEl={anchorElProfileMenu}
                 anchorOrigin={{
                   vertical: "bottom",
                   horizontal: "right",
@@ -122,31 +201,31 @@ function Header() {
                   vertical: "top",
                   horizontal: "right",
                 }}
-                open={isOpen}
-                onClose={handleClose}
+                open={isProfileMenuOpen}
+                onClose={handleProfileClose}
               >
                 {userRole === roles.GUEST ? (
-                  <>
-                    <ListItemButton onClick={() => navigate("/login")}>
-                      <ListItemIcon sx={{ minWidth: "36px" }}>
-                        <Login fontSize="small" />
-                      </ListItemIcon>
-                      <ListItemText primary="Login" />
-                    </ListItemButton>
-                  </>
+                  <ListItemButton onClick={() => navigate("/login")}>
+                    <ListItemIcon sx={{ minWidth: "36px" }}>
+                      <Login fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText primary="Login" />
+                  </ListItemButton>
                 ) : (
                   <>
-                    <ListItem onClick={handleClose}>
-                      <Avatar sx={{ width: 32, height: 32, ml: -0.5, mr: 1 }} />{" "}
-                      My account
-                    </ListItem>
+                    <ListItemButton onClick={() => navigate("/profile")}>
+                      <ListItemIcon sx={{ minWidth: "36px" }}>
+                        <AccountBox fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText primary="Profile" />
+                    </ListItemButton>
                     <Divider />
-                    <ListItem onClick={handleClose}>
-                      <ListItemIcon>
+                    <ListItemButton onClick={() => navigate("/login")}>
+                      <ListItemIcon sx={{ minWidth: "36px" }}>
                         <Logout fontSize="small" />
                       </ListItemIcon>
-                      Logout
-                    </ListItem>
+                      <ListItemText primary="Logout" />
+                    </ListItemButton>
                   </>
                 )}
               </Menu>
