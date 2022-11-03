@@ -31,11 +31,11 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (loginParams) => {
+  const onSubmit = (loginParams) => {
     setIsLoading(true);
     const authApi = new AuthenticationAPI(accToken);
     try {
-      const res = await authApi.login(loginParams);
+      const res = authApi.login(loginParams);
       setLoggedUser(res.data);
       console.log(loggedUser);
     } catch (err) {

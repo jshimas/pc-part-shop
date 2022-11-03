@@ -5,7 +5,7 @@ export default class AuthenticationAPI extends Api {
     return super.init().post("/users/login", { data });
   };
 
-  singup = async (data) => {
+  singup = (data) => {
     return super.init().post("/users/singup", { data });
   };
 }

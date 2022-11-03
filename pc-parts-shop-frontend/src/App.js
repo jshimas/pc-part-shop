@@ -13,6 +13,7 @@ import PaymentPage from "./pages/ShoppingCartPage/PaymentPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Main from "./components/Main/Main";
 import BuildAddPage from "./pages/BuildPages/BuildAddPage/BuildAddPage";
+import AccountsPage from "./pages/AccountsPage/AccountsPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="cart" element={<ShoppingCartPage />} />
         <Route path="payment" element={<PaymentPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="accounts" element={<AccountsPage />} />
       </Route>
 
       <Route exact path="/login" element={<Login />} />

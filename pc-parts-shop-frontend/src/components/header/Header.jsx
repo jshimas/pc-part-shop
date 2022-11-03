@@ -16,21 +16,15 @@ import {
   Button,
   ListItemButton,
   ListItemText,
-  MenuItem,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
-import { AccountBox } from "@mui/icons-material";
-
-const pages = [
-  { name: "completed builds", link: "builds" },
-  { name: "pc builder", link: "builds/new" },
-];
 
 const parts = [
   {
@@ -155,28 +149,34 @@ function Header() {
               </Menu>
             </div>
 
-            {pages.map((page, index) => (
+            <Button
+              onClick={() => navigate(`/builds`)}
+              sx={{ my: 1, color: "white", display: "block" }}
+            >
+              completed builds
+            </Button>
+            {userRole !== roles.GUEST && (
               <Button
-                onClick={() => navigate(`/${page.link}`)}
-                key={page}
+                onClick={() => navigate(`/builds/new`)}
                 sx={{ my: 1, color: "white", display: "block" }}
               >
-                {page.name}
+                pc builder
               </Button>
-            ))}
+            )}
           </Box>
 
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              color="inherit"
-              onClick={() => navigate("/cart")}
-            >
-              <Badge badgeContent={0} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-
+            {userRole !== roles.GUEST && (
+              <IconButton
+                size="large"
+                color="inherit"
+                onClick={() => navigate("/cart")}
+              >
+                <Badge badgeContent={2} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            )}
             <div>
               <IconButton
                 size="large"
@@ -214,14 +214,22 @@ function Header() {
                 ) : (
                   <>
                     <ListItemButton onClick={() => navigate("/profile")}>
-                      <ListItemIcon sx={{ minWidth: "36px" }}>
-                        <AccountBox fontSize="small" />
+                      <ListItemIcon>
+                        <AccountCircleIcon sx={{ fontSize: 32 }} />
                       </ListItemIcon>
                       <ListItemText primary="Profile" />
                     </ListItemButton>
+                    {userRole === roles.ADMIN && (
+                      <ListItemButton onClick={() => navigate("/accounts")}>
+                        <ListItemIcon>
+                          <ManageAccountsIcon sx={{ fontSize: 32 }} />
+                        </ListItemIcon>
+                        <ListItemText primary="Manage accounts" />
+                      </ListItemButton>
+                    )}
                     <Divider />
                     <ListItemButton onClick={() => navigate("/login")}>
-                      <ListItemIcon sx={{ minWidth: "36px" }}>
+                      <ListItemIcon>
                         <Logout fontSize="small" />
                       </ListItemIcon>
                       <ListItemText primary="Logout" />
