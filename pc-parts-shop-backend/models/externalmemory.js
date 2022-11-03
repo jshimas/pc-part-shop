@@ -1,24 +1,23 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class ExtrnalMemory extends Model {
+  class ExternalMemory extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      this.hasMany(models.Part, {
-        foreignKey: 'derivedPartId',
-        constraints: false,
-        scope: {
-          derivedPartType: 'ExtrnalMemory',
-        },
-      });
+      this.belongsTo(models.Part, { foreignKey: 'partId' });
     }
   }
-
-  ExtrnalMemory.init(
+  ExternalMemory.init(
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
       readSpeed: {
         type: DataTypes.INTEGER,
@@ -37,8 +36,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    { sequelize }
+    {
+      sequelize,
+      modelName: 'ExternalMemory',
+    }
   );
-
-  return ExtrnalMemory;
+  return ExternalMemory;
 };

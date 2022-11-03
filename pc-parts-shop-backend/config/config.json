@@ -5,7 +5,7 @@
     "database": "main",
     "host": "localhost",
     "dialect": "sqlite",
-    "storage": "../database.sqlite3"
+    "storage": "./database.sqlite3"
   },
   "test": {
     "username": "root",

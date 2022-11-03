@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       shippingDate: DataTypes.DATE,
       deliveryDate: DataTypes.DATE,
+      deliveryAddressId: DataTypes.STRING,
       totalPrice: {
         type: DataTypes.DECIMAL,
         allowNull: false,

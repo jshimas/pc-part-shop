@@ -2,12 +2,16 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class DeliveryAddress extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      this.belongsTo(models.User);
-      this.belongsTo(models.Order);
+      this.belongsTo(models.User, { foreignKey: 'userId' });
+      this.hasOne(models.Order, { foreignKey: 'deliveryAddressId' });
     }
   }
-
   DeliveryAddress.init(
     {
       id: {
@@ -37,8 +41,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    { sequelize }
+    {
+      sequelize,
+      modelName: 'DeliveryAddress',
+    }
   );
-
   return DeliveryAddress;
 };
