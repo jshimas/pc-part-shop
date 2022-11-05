@@ -2,14 +2,10 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class OrderItem extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      this.belongsTo(models.Order, { foreignKey: 'orderId' });
-      this.belongsTo(models.Part, { foreignKey: 'partId' });
+    static associate({ Order, Part, ShoppingCart }) {
+      this.belongsTo(Order, { foreignKey: 'orderId' });
+      this.belongsTo(Part, { foreignKey: 'partId' });
+      this.belongsTo(ShoppingCart, { foreignKey: 'cartId' });
     }
   }
   OrderItem.init(
@@ -24,9 +20,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      orderId: {
+        type: DataTypes.INTEGER,
+      },
+      cartId: {
+        type: DataTypes.INTEGER,
+      },
+      partId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,
+      tableName: 'order_items',
       modelName: 'OrderItem',
     }
   );

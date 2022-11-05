@@ -5,7 +5,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(partdController.getAllParts)
+  .get(partdController.getParts)
   .post(partdController.createPart);
 
 module.exports = router;

@@ -6,19 +6,18 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Button,
   Box,
+  Typography,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { capitalizeFirstLetter, splitByUpperCaseCharacter } from "../../utils";
 import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useSelector } from "react-redux";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
 
-export default function PartsTable({ headerArr, rows }) {
+export default function PartsTable({ rows }) {
   const role = useSelector(selectRole);
 
   const navigate = useNavigate();
@@ -28,31 +27,17 @@ export default function PartsTable({ headerArr, rows }) {
     navigate(`/builds/new`);
   };
 
-  const formatHeaders = (arr) => {
-    const headers = arr.filter((el) => el !== "id");
-
-    const capitalize = (arr) =>
-      arr.map((word) => capitalizeFirstLetter(word)).join(" ");
-
-    return headers
-      .map((el) => splitByUpperCaseCharacter(el))
-      .map((el) => capitalize(el));
-  };
-
-  const formatedHeader = formatHeaders(headerArr);
-  const formatedRows = headerArr.filter((el) => !["id", "name"].includes(el));
-
-  return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 800 }} aria-label="parts table">
+  const table = (
+    <TableContainer sx={{ width: 1000, margin: "0 auto" }}>
+      <Table aria-label="parts table">
         <TableHead>
           <TableRow>
-            <TableCell>{formatedHeader[0]}</TableCell>
-            {formatedHeader.slice(1).map((el) => (
-              <TableCell key={el} align="right">
-                {el}
-              </TableCell>
-            ))}
+            <TableCell sx={{ width: "35%" }}>Name</TableCell>
+            <TableCell align="right" sx={{ width: "10%" }}>
+              Manufacturer
+            </TableCell>
+            <TableCell align="right">Release date</TableCell>
+            <TableCell align="right">Price</TableCell>
             <TableCell key={""} align="right">
               {""}
             </TableCell>
@@ -60,10 +45,7 @@ export default function PartsTable({ headerArr, rows }) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+            <TableRow key={row.name}>
               <TableCell component="th" scope="row">
                 <Button
                   variant="text"
@@ -72,9 +54,9 @@ export default function PartsTable({ headerArr, rows }) {
                   {row.name}
                 </Button>
               </TableCell>
-              {formatedRows.map((el) => (
-                <TableCell align="right">{row[el]}</TableCell>
-              ))}
+              <TableCell align="right">{row.manufacturer}</TableCell>
+              <TableCell align="right">{row.releaseDate}</TableCell>
+              <TableCell align="right">{row.price}</TableCell>
               {role !== roles.GUEST && (
                 <TableCell align="right">
                   <Box sx={{ display: "inline-flex", gap: 2 }}>
@@ -100,5 +82,15 @@ export default function PartsTable({ headerArr, rows }) {
         </TableBody>
       </Table>
     </TableContainer>
+  );
+
+  return (
+    <>
+      {rows.length === 0 ? (
+        <Typography sx={{ textAlign: "center" }}>Wow, such empty!</Typography>
+      ) : (
+        table
+      )}
+    </>
   );
 }

@@ -8,7 +8,7 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
-import AuthenticationAPI from "../../apis/AuthenticationAPI";
+import AuthenticationApi from "../../apis/AuthenticationApi";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -33,7 +33,7 @@ export default function Login() {
 
   const onSubmit = (loginParams) => {
     setIsLoading(true);
-    const authApi = new AuthenticationAPI(accToken);
+    const authApi = new AuthenticationApi(accToken);
     try {
       const res = authApi.login(loginParams);
       setLoggedUser(res.data);

@@ -6,7 +6,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
   Button,
   IconButton,
   Typography,
@@ -15,10 +14,10 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import { Box } from "@mui/system";
 
 export default function ShoppingCartTable({ items }) {
   const navigate = useNavigate();
+
   return (
     <TableContainer>
       <Table aria-label="parts table">

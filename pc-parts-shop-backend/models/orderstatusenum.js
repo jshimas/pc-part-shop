@@ -1,12 +1,12 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Cooler extends Model {
-    static associate(models) {
-      this.belongsTo(models.Part, { foreignKey: 'partId' });
+  class OrderStatusEnum extends Model {
+    static associate({ Order }) {
+      this.hasMany(Order, { foreignKey: 'statusEnum' });
     }
   }
-  Cooler.init(
+  OrderStatusEnum.init(
     {
       id: {
         allowNull: false,
@@ -14,16 +14,16 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      height: {
-        type: DataTypes.FLOAT,
+      status: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      tableName: 'coolers',
-      modelName: 'Cooler',
+      tableName: 'order_status_enums',
+      modelName: 'OrderStatusEnum',
     }
   );
-  return Cooler;
+  return OrderStatusEnum;
 };

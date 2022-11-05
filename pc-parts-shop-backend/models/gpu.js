@@ -2,13 +2,9 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class GPU extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate({ Part }) {
+    static associate({ Part, PcieStandartEnum }) {
       this.belongsTo(Part, { foreignKey: 'partId' });
+      this.belongsTo(PcieStandartEnum, { foreignKey: 'pcieStandartEnum' });
     }
   }
   GPU.init(
@@ -31,14 +27,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      pcieStandart: {
-        type: DataTypes.ENUM,
-        values: ['PCLe 3.0', 'PCLe 4.0', 'PCLe 4.0'],
+      pcieStandartEnum: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      partId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
     {
       sequelize,
+      tableName: 'gpus',
       modelName: 'GPU',
     }
   );

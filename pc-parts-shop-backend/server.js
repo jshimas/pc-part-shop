@@ -1,5 +1,5 @@
 const app = require('./app');
-const db = require('./models');
+const { sequelize } = require('./models');
 // db.authenticate()
 //   .then((err) => {
 //     console.log('Connection established.');
@@ -9,9 +9,11 @@ const db = require('./models');
 //     console.log('Unable to connect to database: ', err);
 //   });
 
-(async () => await db.sequelize.sync({ force: true }))();
+(async () => await sequelize.authenticate())();
 
 const port = 8000;
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`App running on port ${port}...`);
+  await sequelize.authenticate();
+  console.log('Database connected!');
 });

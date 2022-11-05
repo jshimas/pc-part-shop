@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from "../../../utils";
 import { useSelector } from "react-redux";
 import { selectRole } from "../../../app/slices/userSlice";
 import { roles } from "../../../roles";
+import PartsApi from "../../../apis/PartsApi";
 
 export default function PartListPage() {
   const { type } = useParams();
@@ -16,50 +17,26 @@ export default function PartListPage() {
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
 
   const role = useSelector(selectRole);
-
-  async function fetchData() {
-    return [
-      {
-        id: 1,
-        name: "name test 1",
-        manufacturer: "manufacturer test 1",
-        price: "price test 1",
-        releaseDate: "release date test 1",
-      },
-      {
-        id: 2,
-        name: "name test 2",
-        manufacturer: "manufacturer test 2",
-        price: "price test 2",
-        releaseDate: "release date test 2",
-      },
-      {
-        id: 3,
-        name: "name test 3",
-        manufacturer: "manufacturer test 3",
-        price: "price test 3",
-        releaseDate: "release date test 3",
-      },
-    ];
-  }
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const data = await fetchData();
-        setData(data);
-        // setError(null);
+        const partsApi = new PartsApi();
+        const response = await partsApi.getPartsByType(type);
+        console.log(response.data.parts);
+        setData(response.data.parts);
+        setError(null);
       } catch (err) {
-        // setError(err.message);
+        setError(err.response.data.message);
         setData(null);
       }
       setLoading(false);
     };
     getData();
-  }, [loading]);
+  }, [type]);
 
   return (
     <div>
@@ -87,11 +64,7 @@ export default function PartListPage() {
           </Button>
         )}
       </Box>
-      {loading ? (
-        <CircularProgress />
-      ) : (
-        <PartsTable headerArr={Object.keys(data[0])} rows={data} />
-      )}
+      {loading ? <CircularProgress /> : <PartsTable rows={data} />}
     </div>
   );
 }

@@ -1,28 +1,29 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class OrderItem extends Model {
-    static associations(models) {
-      this.belongsTo(models.Order);
-      this.belongsTo(models.Part);
+  class PSU extends Model {
+    static associate({ Part }) {
+      this.belongsTo(Part, { foreignKey: 'partId' });
     }
   }
 
-  OrderItem.init(
+  PSU.init(
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-        allowNull: false,
       },
-      quantity: {
+      powerCapacity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
-    { sequelize }
+    {
+      sequelize,
+      tableName: 'psus',
+      modelName: 'PSU',
+    }
   );
-
-  return OrderItem;
+  return PSU;
 };

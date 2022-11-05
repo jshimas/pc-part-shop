@@ -7,13 +7,20 @@ module.exports = (sequelize, DataTypes) => {
       return await bcrypt.compare(candidatePassword, this.password);
     }
 
-    static associations(models) {
-      this.hasMany(models.Order);
-      this.hasMany(models.DeliveryAddress);
-      this.hasMany(models.Build);
+    static associate({
+      Order,
+      ShoppingCart,
+      DeliveryAddress,
+      Build,
+      UserRoleEnum,
+    }) {
+      this.hasOne(ShoppingCart, { foreignKey: 'userId' });
+      this.hasMany(Order, { foreignKey: 'userId' });
+      this.hasMany(DeliveryAddress, { foreignKey: 'userId' });
+      this.hasMany(Build, { foreignKey: 'userId' });
+      this.belongsTo(UserRoleEnum, { foreignKey: 'roleEnum' });
     }
   }
-
   User.init(
     {
       id: {
@@ -33,7 +40,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-        isEmail: true,
+        isEmail: { msg: 'Email is in a wrong format' },
+      },
+      phone: DataTypes.STRING,
+      birthDate: DataTypes.STRING,
+      roleEnum: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
       },
       password: {
         type: DataTypes.STRING,
@@ -47,16 +61,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           isEqualToPassword(value) {
-            return value === this.password;
+            if (value !== this.password)
+              throw new Error('Passwords do not match');
           },
         },
-      },
-      phone: DataTypes.STRING,
-      role: {
-        type: DataTypes.ENUM,
-        allowNull: false,
-        values: ['user', 'admin'],
-        defaultValue: 'user',
       },
       fullName: {
         type: DataTypes.VIRTUAL,
@@ -64,12 +72,16 @@ module.exports = (sequelize, DataTypes) => {
         get() {
           return `${this.firstName} ${this.lastName}`;
         },
-        set(value) {
+        set() {
           throw new Error('Do not try to set the `fullName` value!');
         },
       },
     },
-    { sequelize }
+    {
+      sequelize,
+      tableName: 'users',
+      modelName: 'User',
+    }
   );
 
   User.beforeCreate(async (user) => {

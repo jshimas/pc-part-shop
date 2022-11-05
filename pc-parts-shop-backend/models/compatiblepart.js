@@ -19,9 +19,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      part1Id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      part2Id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,
+      tableName: 'compatible_parts',
       modelName: 'CompatiblePart',
     }
   );

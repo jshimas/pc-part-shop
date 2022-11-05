@@ -9,7 +9,6 @@ import PartAddPage from "./pages/PartPages/PartAddPage/PartAddPage";
 import BuildListPage from "./pages/BuildPages/BuildListPage/BuildListPage";
 import BuildPage from "./pages/BuildPages/BuildPage/BuildPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage/ShoppingCartPage";
-import PaymentPage from "./pages/ShoppingCartPage/PaymentPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Main from "./components/Main/Main";
 import BuildAddPage from "./pages/BuildPages/BuildAddPage/BuildAddPage";
@@ -34,7 +33,6 @@ function App() {
         </Route>
 
         <Route path="cart" element={<ShoppingCartPage />} />
-        <Route path="payment" element={<PaymentPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="accounts" element={<AccountsPage />} />
       </Route>

@@ -1,40 +1,37 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class CPU extends Model {
-    static associate({ Part }) {
-      this.belongsTo(Part, { foreignKey: 'partId' });
+  class RAM extends Model {
+    static associate({ RamTypeEnum }) {
+      this.belongsTo(RamTypeEnum, { foreignKey: 'typeEnum' });
     }
   }
-  CPU.init(
+  RAM.init(
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },
-      socketStandard: {
-        type: DataTypes.STRING,
         allowNull: false,
       },
       frequancy: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      coreQuantity: {
+      capacity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      threadQuantity: {
+      typeEnum: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
     },
     {
       sequelize,
-      tableName: 'cpus',
-      modelName: 'CPU',
+      tableName: 'rams',
+      modelName: 'RAM',
     }
   );
-  return CPU;
+  return RAM;
 };

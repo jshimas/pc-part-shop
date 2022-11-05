@@ -2,13 +2,10 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Motherboard extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate({ Part }) {
+    static associate({ Part, PcieStandartEnum, RamTypeEnum }) {
       this.belongsTo(Part, { foreignKey: 'partId' });
+      this.belongsTo(PcieStandartEnum, { foreignKey: 'pcieStandartEnum' });
+      this.belongsTo(RamTypeEnum, { foreignKey: 'ramTypeEnum' });
     }
   }
   Motherboard.init(
@@ -22,10 +19,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      cpuSocketQuantity: DataTypes.INTEGER,
-      ramType: {
-        type: DataTypes.ENUM,
-        values: ['DDR3', 'DDR4', 'DDR5'],
+      cpuSocketQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      ramTypeEnum: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       ramSocketQuantity: {
@@ -40,18 +39,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      pcieStandart: {
-        type: DataTypes.ENUM,
-        values: ['PCLe 3.0', 'PCLe 4.0', 'PCLe 4.0'],
+      pcieStandartEnum: {
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       pcieSocketQuantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      partId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
     },
     {
       sequelize,
+      tableName: 'motherboards',
       modelName: 'Motherboard',
     }
   );

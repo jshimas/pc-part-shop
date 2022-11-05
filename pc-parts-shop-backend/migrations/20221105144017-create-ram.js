@@ -1,30 +1,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('gpus', {
+    await queryInterface.createTable('rams', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      vramQuantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      vramFrequancy: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       frequancy: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      pcieStandart: {
+      capacity: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      partId: {
+      typeEnum: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -39,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('gpus');
+    await queryInterface.dropTable('rams');
   },
 };

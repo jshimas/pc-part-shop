@@ -1,7 +1,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Motherboards', {
+    await queryInterface.createTable('motherboards', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false,
       },
       ramType: {
-        type: Sequelize.ENUM,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       ramSocketQuantity: {
@@ -33,7 +33,7 @@ module.exports = {
         allowNull: false,
       },
       pcieStandart: {
-        type: Sequelize.ENUM,
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       pcieSocketQuantity: {
@@ -46,15 +46,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('Motherboards');
+    await queryInterface.dropTable('motherboards');
   },
 };

@@ -18,7 +18,8 @@
     "nodemailer": "^6.8.0",
     "sequelize": "^6.25.2",
     "sequelize-cli": "^6.5.1",
-    "sqlite3": "^5.1.2"
+    "sqlite3": "^5.1.2",
+    "stripe": "^10.16.0"
   },
   "devDependencies": {
     "eslint": "^8.25.0",

@@ -1,32 +1,35 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('gpus', {
+    await queryInterface.createTable('orders', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      vramQuantity: {
-        type: Sequelize.INTEGER,
+      paymentDate: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
-      vramFrequancy: {
-        type: Sequelize.INTEGER,
+      shippingDate: {
+        type: Sequelize.STRING,
+      },
+      deliveryDate: {
+        type: Sequelize.STRING,
+      },
+      deliveryAddressId: {
+        type: Sequelize.STRING,
+      },
+      totalPrice: {
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      frequancy: {
+      status: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
-      pcieStandart: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      partId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
+      details: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface) {
-    await queryInterface.dropTable('gpus');
+    await queryInterface.dropTable('orders');
   },
 };

@@ -5,6 +5,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const partRouter = require('./routes/partRouter');
 const buildRouter = require('./routes/buildRouter');
 const userRouter = require('./routes/userRouter');
+const checkoutRouter = require('./routes/checkoutRouter');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use('*', cors());
 app.use('/api/v1/parts', partRouter);
 app.use('/api/v1/builds', buildRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/checkouts', checkoutRouter);
 
 app.use('*', (req, res, next) => {
   next(new AppError(`Can not find ${req.originalUrl} on this server`, 404));

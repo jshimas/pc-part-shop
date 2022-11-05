@@ -1,13 +1,13 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Build extends Model {
-    static associate({ BuildPart, User }) {
-      this.hasMany(BuildPart, { foreignKey: 'buildId' });
-      this.belongsTo(User, { foreignKey: 'userId' });
+  class RamTypeEnum extends Model {
+    static associate({ Motherboard, RAM }) {
+      this.hasMany(Motherboard, { foreignKey: 'ramTypeEnum' });
+      this.hasMany(RAM, { foreignKey: 'ramTypeEnum' });
     }
   }
-  Build.init(
+  RamTypeEnum.init(
     {
       id: {
         allowNull: false,
@@ -15,16 +15,16 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      name: {
+      ramType: {
         type: DataTypes.STRING,
         allowNull: false,
       },
     },
     {
       sequelize,
-      tableName: 'builds',
-      modelName: 'Build',
+      tableName: 'ram_type_enums',
+      modelName: 'RamTypeEnum',
     }
   );
-  return Build;
+  return RamTypeEnum;
 };
