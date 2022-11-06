@@ -14,9 +14,43 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
+import CartApi from "../../apis/CartApi";
+import { useDispatch } from "react-redux";
+import { decreaseQuantity, increaseQuantity } from "../../app/slices/cartSlice";
 
 export default function ShoppingCartTable({ items }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleDecrease = async (itemId) => {
+    try {
+      const cartApi = new CartApi();
+      await cartApi.decreaseItemQuantity(itemId);
+      dispatch(decreaseQuantity(itemId));
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const handleIncrease = async (itemId) => {
+    try {
+      const cartApi = new CartApi();
+      await cartApi.increaseItemQuantity(itemId);
+      dispatch(increaseQuantity(itemId));
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const handleDelete = async (itemId) => {
+    try {
+      const cartApi = new CartApi();
+      await cartApi.deleteCartItem(itemId);
+      items.filter((item) => item.id !== itemId);
+    } catch (err) {
+      throw err;
+    }
+  };
 
   return (
     <TableContainer>
@@ -81,29 +115,31 @@ export default function ShoppingCartTable({ items }) {
 
         <TableBody>
           {items.map((item) => (
-            <TableRow key={item.name}>
+            <TableRow key={item.id}>
               <TableCell component="th" scope="row" sx={{ pl: 1 }}>
                 <Button
                   variant="text"
-                  onClick={() => navigate(`/parts/${item.type}/${item.id}`)}
+                  onClick={() =>
+                    navigate(`/parts/${item.Part.type}/${item.Part.id}`)
+                  }
                 >
-                  {item.name}
+                  {item.Part.name}
                 </Button>
               </TableCell>
-              <TableCell align="right">{item.manufacturer}</TableCell>
-              <TableCell align="right">{item.releaseDate}</TableCell>
-              <TableCell align="right">{item.price}</TableCell>
+              <TableCell align="right">{item.Part.manufacturer}</TableCell>
+              <TableCell align="right">{item.Part.releaseDate}</TableCell>
+              <TableCell align="right">{item.Part.price}</TableCell>
               <TableCell align="center">
-                <IconButton>
+                <IconButton onClick={() => handleDecrease(item.id)}>
                   <RemoveIcon fontSize="small" />
                 </IconButton>
-                {item.amount}
-                <IconButton>
+                {item.quantity}
+                <IconButton onClick={() => handleIncrease(item.id)}>
                   <AddIcon fontSize="small" />
                 </IconButton>
               </TableCell>
               <TableCell align="left" size="small" sx={{ p: 0 }}>
-                <IconButton>
+                <IconButton onClick={() => handleDelete(item.id)}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>
