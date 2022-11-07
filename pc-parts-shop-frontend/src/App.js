@@ -6,6 +6,9 @@ import HomePage from "./pages/HomePage/HomePage";
 import PartListPage from "./pages/PartPages/PartListPage/PartsListPage";
 import PartPage from "./pages/PartPages/PartPage/PartPage";
 import PartAddPage from "./pages/PartPages/PartAddPage/PartAddPage";
+import PartRemovePage from "./pages/PartPages/PartRemovePage/PartRemovePage";
+import PartEditPage from "./pages/PartPages/PartEditPage/PartEditPage";
+import PartFilterPage from "./pages/PartPages/PartFilterPage/PartFilterPage";
 import BuildListPage from "./pages/BuildPages/BuildListPage/BuildListPage";
 import BuildPage from "./pages/BuildPages/BuildPage/BuildPage";
 import ShoppingCartPage from "./pages/ShoppingCartPage/ShoppingCartPage";
@@ -40,6 +43,11 @@ function App() {
           <Route index element={<PartListPage />} />
           <Route path=":id" element={<PartPage />} />
           <Route path="new" element={<PartAddPage />} />
+          <Route path="filter" element={<PartFilterPage />} />
+          <Route path=":id">
+            <Route path="remove" element={<PartRemovePage/>}/>
+            <Route path="edit" element={<PartEditPage/> }/>
+          </Route>
         </Route>
 
         <Route path="builds">

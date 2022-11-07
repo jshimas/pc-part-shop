@@ -1,14 +1,15 @@
 import * as React from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { selectRole } from "../../../app/slices/userSlice";
 import { roles } from "../../../roles";
-import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
-import { useSelector } from "react-redux";
-import EditIcon from '@mui/icons-material/Edit';
 
-export default function PartPage() {
+import { useSelector } from "react-redux";
+
+export default function PartRemovePage() {
   const { type, id } = useParams();
+
   
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -18,29 +19,28 @@ export default function PartPage() {
   return (
     <div>
       <h3>
-        {type} part page, ID: {id}
-      </h3>
-      {role === roles.ADMIN && (
+        {type} Do you wish to remove the part: ID: {id}
+        {role === roles.ADMIN && (
           <Button
             variant="outlined"
-            startIcon={<RemoveCircleOutlinedIcon />}
-            onClick={() => navigate(`${pathname}/remove`)}
-
-          >
-            Remove {type.split("-").join(" ")}
-          </Button>
-        )}
-
-      {role === roles.ADMIN && (
-          <Button
-            variant="outlined"
-            startIcon={<EditIcon />}
+            
             onClick={() => navigate(`${pathname}/edit`)}
 
           >
-            Edit {type.split("-").join(" ")}
+            Yes 
           </Button>
         )}
+              {role === roles.ADMIN && (
+          <Button
+            variant="outlined"
+            
+            onClick={() => navigate(`${pathname}/edit`)}
+
+          >
+            No 
+          </Button>
+        )}
+      </h3>
     </div>
   );
 }

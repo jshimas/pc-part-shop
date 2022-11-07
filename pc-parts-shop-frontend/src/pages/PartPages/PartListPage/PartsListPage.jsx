@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PartsTable from "../../../components/PartsTable/PartsTable";
 import { useEffect, useState } from "react";
@@ -60,6 +61,15 @@ export default function PartListPage() {
             onClick={() => navigate(`${pathname}/new`)}
           >
             Add {type.split("-").join(" ")}
+          </Button>
+        )}
+                {role === roles.ADMIN && (
+          <Button
+            variant="outlined"
+            startIcon={<FilterAltOutlinedIcon />}
+            onClick={() => navigate(`${pathname}/filter`)}
+          >
+            Filter {type.split("-").join(" ")}
           </Button>
         )}
       </Box>
