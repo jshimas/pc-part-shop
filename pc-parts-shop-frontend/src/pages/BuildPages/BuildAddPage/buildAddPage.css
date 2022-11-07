@@ -1,0 +1,28 @@
+p
+{
+    margin-bottom: 20px;
+}
+
+h3
+{
+    margin-bottom: 20px;
+}
+
+button
+{
+    width: 150px;
+    height: 28px;
+    padding-left: 10px;
+    background-color: #00005B;
+    border: solid #0000DB 2px;
+    position: absolute;
+    margin: auto;
+    place-items: center;
+    border-radius: 5px;
+    color:white;
+}
+
+div
+{
+    margin-bottom: 20px;
+}

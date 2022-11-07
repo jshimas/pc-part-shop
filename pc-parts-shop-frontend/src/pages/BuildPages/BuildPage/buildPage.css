@@ -1,0 +1,57 @@
+tr
+{
+    height: 30px;
+}
+
+tr.items
+{
+    border: solid #999999 3px;
+}
+
+th
+{
+    background-color: #121212;
+    color:white;
+}
+
+table
+{
+    width:800px;
+}
+
+div
+{
+    align-content: center;
+    padding-top: 10px;
+}
+
+td.component
+{
+    width: 200px;
+    margin: auto;
+}
+
+td.select-comp
+{
+    width: 150px;
+    height: 28px;
+    padding-left: 10px;
+    background-color: #00005B;
+    border: solid #0000DB 2px;
+    position: absolute;
+    margin: auto;
+    place-items: center;
+    border-radius: 5px;
+}
+
+a
+{
+    color: black;
+    text-decoration: none;
+}
+
+a.comp-button
+{
+    color: #ffffff;
+    text-decoration: none;
+}
