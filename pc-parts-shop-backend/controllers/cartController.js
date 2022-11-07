@@ -18,22 +18,30 @@ exports.getUserCart = catchAsync(async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
-    data: {
-      cartId: cart.id,
-      cartItems,
-    },
+    cartId: cart.id,
+    items: cartItems,
   });
 });
 
 exports.addCartItem = catchAsync(async (req, res) => {
   const { cartId, partId } = req.query;
 
-  const cartItem = await OrderItem.create({ cartId, partId });
+  let newItem;
+  const existingItem = await OrderItem.findOne({ where: { partId } });
+  if (!existingItem) {
+    newItem = await OrderItem.create({ cartId, partId });
+  } else {
+    await existingItem.increment('quantity');
+    newItem = await OrderItem.findOne({ where: { partId } });
+  }
+
+  const cartItem = await OrderItem.findOne({
+    where: { id: newItem.id },
+    include: Part,
+  });
 
   res.status(201).json({
-    status: 'success',
-    data: cartItem,
+    item: cartItem,
   });
 });
 
@@ -49,8 +57,7 @@ exports.changeCartItemQuantity = catchAsync(async (req, res, next) => {
   await cartItem.reload();
 
   res.status(200).json({
-    status: 'success',
-    data: cartItem,
+    item: cartItem,
   });
 });
 
@@ -63,5 +70,5 @@ exports.deleteCartItem = catchAsync(async (req, res, next) => {
 
   await cartItem.destroy({ force: true });
 
-  res.status(204);
+  res.status(204).json({});
 });
