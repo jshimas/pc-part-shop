@@ -13,18 +13,33 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
+import CartApi from "../../apis/CartApi";
+import { addItem } from "../../app/slices/cartSlice";
 
 export default function PartsTable({ rows }) {
   const role = useSelector(selectRole);
+  const cartId = useSelector((state) => state.cart.id);
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const handleClick = () => {
     navigate(`/builds/new`);
+  };
+
+  const addToCart = async (partId) => {
+    try {
+      const cartApi = new CartApi();
+      const response = await cartApi.addItem(cartId, partId);
+      console.log(response.data.item);
+      dispatch(addItem(response.data.item));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const table = (
@@ -68,7 +83,7 @@ export default function PartsTable({ rows }) {
                       Add to build
                     </Button>
                     <Button
-                      onClick={handleClick}
+                      onClick={() => addToCart(row.id)}
                       variant="outlined"
                       startIcon={<ShoppingCartIcon />}
                     >

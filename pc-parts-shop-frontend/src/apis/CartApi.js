@@ -14,18 +14,24 @@ export default class CartApi extends Api {
   };
 
   deleteCartItem = async (itemId) => {
-    return super.init().patch(`cart?itemId=${itemId}`);
+    return super.init().delete(`cart?itemId=${itemId}`);
   };
 
   addItem = async (cartId, partId) => {
-    return super.init().patch(`cart?cartId=${cartId}&partId=${partId}`);
+    console.log(cartId, partId);
+    return super.init().post(`cart?cartId=${cartId}&partId=${partId}`);
   };
 
-  checkout = (data) => {
+  checkout = (user, cartId, items) => {
     const cartData = {
-      cartId: data.id,
-      cartItems: data.items,
+      user,
+      cartId,
+      items,
     };
-    return super.init().post("/checkout-session", cartData);
+    return super.init().post("/checkout/checkout-session", cartData);
+  };
+
+  createOrder = async (cartId, userId) => {
+    return super.init().post(`/checkout?cartId=${cartId}&userId=${userId}`);
   };
 }

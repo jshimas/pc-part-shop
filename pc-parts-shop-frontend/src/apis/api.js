@@ -2,7 +2,6 @@ import axios from "axios";
 
 export default class Api {
   constructor(accessToken = null) {
-    console.log("kviecia");
     this.client = null;
     this.api_token = accessToken;
     this.api_url = "http://127.0.0.1:8000/api/v1/";
@@ -22,8 +21,6 @@ export default class Api {
       headers: headers,
     });
 
-    console.log("klientas: ", this.client);
-    console.log("API_URL: ", this.api_url);
     return this.client;
   }
 }

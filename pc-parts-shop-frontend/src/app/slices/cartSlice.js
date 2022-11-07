@@ -2,9 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import CartApi from "../../apis/CartApi";
 
 const initialState = {
+  id: null,
   items: [],
   status: "idle",
   error: null,
+  checkoutStatus: null,
 };
 
 export const fetchItems = createAsyncThunk(
@@ -29,10 +31,28 @@ export const cartSlice = createSlice({
       if (item) item.quantity--;
     },
     addItem(state, action) {
-      state.items = state.items.concat(action.payload);
+      const item = action.payload;
+      const existingItem = state.items.find((el) => el.Part.id === item.partId);
+      if (!existingItem) {
+        state.items.push(item);
+      } else {
+        existingItem.quantity++;
+      }
     },
     deleteItem(state, action) {
-      state.items = state.items.filter((item) => action.payload !== item.id);
+      state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    deleteAllItems(state, action) {
+      return {
+        ...state,
+        items: [],
+      };
+    },
+    setCheckoutStatus(state, action) {
+      return {
+        ...state,
+        checkoutStatus: action.payload,
+      };
     },
   },
   extraReducers(builder) {
@@ -42,6 +62,7 @@ export const cartSlice = createSlice({
       })
       .addCase(fetchItems.fulfilled, (state, action) => {
         state.status = "succeeded";
+        state.id = action.payload.cartId;
         state.items = action.payload.items;
       })
       .addCase(fetchItems.rejected, (state, action) => {
@@ -51,8 +72,14 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { increaseQuantity, decreaseQuantity, addItem, deleteItem } =
-  cartSlice.actions;
+export const {
+  increaseQuantity,
+  decreaseQuantity,
+  addItem,
+  deleteItem,
+  setCheckoutStatus,
+  deleteAllItems,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
 

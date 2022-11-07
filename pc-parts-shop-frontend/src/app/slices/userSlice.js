@@ -7,6 +7,7 @@ export const userSlice = createSlice({
     username: "",
     role: "admin",
     accessToken: "",
+    email: "demo@test.io",
     cartId: "",
   },
   reducers: {
