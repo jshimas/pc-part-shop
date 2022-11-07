@@ -16,7 +16,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import CartApi from "../../apis/CartApi";
 import { useDispatch } from "react-redux";
-import { decreaseQuantity, increaseQuantity } from "../../app/slices/cartSlice";
+import {
+  decreaseQuantity,
+  deleteItem,
+  increaseQuantity,
+} from "../../app/slices/cartSlice";
 
 export default function ShoppingCartTable({ items }) {
   const navigate = useNavigate();
@@ -46,20 +50,20 @@ export default function ShoppingCartTable({ items }) {
     try {
       const cartApi = new CartApi();
       await cartApi.deleteCartItem(itemId);
-      items.filter((item) => item.id !== itemId);
+      dispatch(deleteItem(itemId));
     } catch (err) {
       throw err;
     }
   };
 
-  return (
+  const renderTable = (
     <TableContainer>
       <Table aria-label="parts table">
         <TableHead>
           <TableRow>
             <TableCell
               sx={{
-                width: "20%",
+                width: "30%",
                 fontWeight: "bold",
                 fontSize: "medium",
                 textTransform: "uppercase",
@@ -130,7 +134,9 @@ export default function ShoppingCartTable({ items }) {
               <TableCell align="right">{item.Part.releaseDate}</TableCell>
               <TableCell align="right">{item.Part.price}</TableCell>
               <TableCell align="center">
-                <IconButton onClick={() => handleDecrease(item.id)}>
+                <IconButton
+                  onClick={() => item.quantity > 1 && handleDecrease(item.id)}
+                >
                   <RemoveIcon fontSize="small" />
                 </IconButton>
                 {item.quantity}
@@ -149,8 +155,20 @@ export default function ShoppingCartTable({ items }) {
         </TableBody>
       </Table>
       <Typography sx={{ textAlign: "right", p: 2, fontWeight: "bold" }}>
-        Total: 238.86 &euro;
+        Total:{" "}
+        {items
+          .reduce((acc, item) => acc + item.quantity * item.Part.price, 0)
+          .toFixed(2)}{" "}
+        &euro;
       </Typography>
     </TableContainer>
+  );
+
+  return items.length !== 0 ? (
+    renderTable
+  ) : (
+    <Typography sx={{ textAlign: "center" }}>
+      Shopping cart is empty.
+    </Typography>
   );
 }

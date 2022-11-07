@@ -13,8 +13,24 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import Main from "./components/Main/Main";
 import BuildAddPage from "./pages/BuildPages/BuildAddPage/BuildAddPage";
 import AccountsPage from "./pages/AccountsPage/AccountsPage";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectId } from "./app/slices/userSlice";
+import { fetchItems } from "./app/slices/cartSlice";
+import SuccessfulCheckoutPage from "./pages/ShoppingCartPage/SuccessfulCheckoutPage";
 
 function App() {
+  const userId = useSelector(selectId);
+  const dispatch = useDispatch();
+
+  const itemsStatus = useSelector((state) => state.cart.status);
+
+  useEffect(() => {
+    if (itemsStatus === "idle") {
+      dispatch(fetchItems(userId));
+    }
+  }, [itemsStatus, dispatch, userId]);
+
   return (
     <Routes>
       <Route element={<Main />}>
@@ -35,6 +51,7 @@ function App() {
         <Route path="cart" element={<ShoppingCartPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="accounts" element={<AccountsPage />} />
+        <Route path="success" element={<SuccessfulCheckoutPage />} />
       </Route>
 
       <Route exact path="/login" element={<Login />} />

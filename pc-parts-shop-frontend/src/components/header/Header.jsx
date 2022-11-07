@@ -16,6 +16,7 @@ import {
   Button,
   ListItemButton,
   ListItemText,
+  MenuItem,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -52,6 +53,9 @@ const parts = [
 function Header() {
   const navigate = useNavigate();
   const userRole = useSelector(selectRole);
+
+  const itemsCount = useSelector((state) => state.cart.items.length);
+  const itemsStatus = useSelector((state) => state.cart.status);
 
   const [anchorElProfileMenu, setAnchorElProfileMenu] = React.useState(null);
   const [anchorElPartsMenu, setAnchorElPartsMenu] = React.useState(null);
@@ -130,21 +134,19 @@ function Header() {
                 anchorEl={anchorElPartsMenu}
                 open={isPartsMenuOpen}
                 onClose={handlePartsMenuClose}
+                onClick={handlePartsMenuClose}
                 MenuListProps={{
                   "aria-labelledby": "parts-button",
                 }}
               >
                 {parts.map((part) => (
-                  <ListItemButton
-                    onClick={
-                      handlePartsMenuClose &&
-                      function () {
-                        navigate(`/${part.link}`);
-                      }
-                    }
+                  <MenuItem
+                    onClick={function () {
+                      navigate(`/${part.link}`);
+                    }}
                   >
                     {part.name}
-                  </ListItemButton>
+                  </MenuItem>
                 ))}
               </Menu>
             </div>
@@ -172,7 +174,10 @@ function Header() {
                 color="inherit"
                 onClick={() => navigate("/cart")}
               >
-                <Badge badgeContent={2} color="error">
+                <Badge
+                  badgeContent={itemsStatus === "succeeded" ? itemsCount : ""}
+                  color="error"
+                >
                   <ShoppingCartIcon />
                 </Badge>
               </IconButton>
@@ -203,38 +208,39 @@ function Header() {
                 }}
                 open={isProfileMenuOpen}
                 onClose={handleProfileClose}
+                onClick={handleProfileClose}
               >
                 {userRole === roles.GUEST ? (
-                  <ListItemButton onClick={() => navigate("/login")}>
+                  <MenuItem onClick={() => navigate("/login")}>
                     <ListItemIcon sx={{ minWidth: "36px" }}>
                       <Login fontSize="small" />
                     </ListItemIcon>
                     <ListItemText primary="Login" />
-                  </ListItemButton>
+                  </MenuItem>
                 ) : (
-                  <>
-                    <ListItemButton onClick={() => navigate("/profile")}>
+                  <Box>
+                    <MenuItem onClick={() => navigate("/profile")}>
                       <ListItemIcon>
                         <AccountCircleIcon sx={{ fontSize: 32 }} />
                       </ListItemIcon>
                       <ListItemText primary="Profile" />
-                    </ListItemButton>
+                    </MenuItem>
                     {userRole === roles.ADMIN && (
-                      <ListItemButton onClick={() => navigate("/accounts")}>
+                      <MenuItem onClick={() => navigate("/accounts")}>
                         <ListItemIcon>
                           <ManageAccountsIcon sx={{ fontSize: 32 }} />
                         </ListItemIcon>
                         <ListItemText primary="Manage accounts" />
-                      </ListItemButton>
+                      </MenuItem>
                     )}
                     <Divider />
-                    <ListItemButton onClick={() => navigate("/login")}>
+                    <MenuItem onClick={() => navigate("/login")}>
                       <ListItemIcon>
                         <Logout fontSize="small" />
                       </ListItemIcon>
                       <ListItemText primary="Logout" />
-                    </ListItemButton>
-                  </>
+                    </MenuItem>
+                  </Box>
                 )}
               </Menu>
             </div>

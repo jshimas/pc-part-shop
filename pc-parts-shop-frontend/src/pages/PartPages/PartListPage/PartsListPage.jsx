@@ -26,7 +26,6 @@ export default function PartListPage() {
       try {
         const partsApi = new PartsApi();
         const response = await partsApi.getPartsByType(type);
-        console.log(response.data.parts);
         setData(response.data.parts);
         setError(null);
       } catch (err) {

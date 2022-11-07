@@ -1,8 +1,8 @@
 import { Snackbar, MuiAlert } from "@mui/material";
 import { useState } from "react";
 
-export default function ErrorAlert({ alert = false, message }) {
-  const [alertOpen, setAlertOpen] = useState(alert);
+export default function ErrorAlert({ message }) {
+  const [alertOpen, setAlertOpen] = useState(!!message);
   return (
     <Snackbar
       open={alertOpen}
