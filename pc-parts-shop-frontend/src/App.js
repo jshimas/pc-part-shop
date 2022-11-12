@@ -41,12 +41,12 @@ function App() {
 
         <Route path="parts/:type">
           <Route index element={<PartListPage />} />
-          <Route path=":id" element={<PartPage />} />
           <Route path="new" element={<PartAddPage />} />
           <Route path="filter" element={<PartFilterPage />} />
           <Route path=":id">
-            <Route path="remove" element={<PartRemovePage/>}/>
-            <Route path="edit" element={<PartEditPage/> }/>
+            <Route index element={<PartPage />} />
+            <Route path="remove" element={<PartRemovePage />} />
+            <Route path="edit" element={<PartEditPage />} />
           </Route>
         </Route>
 
