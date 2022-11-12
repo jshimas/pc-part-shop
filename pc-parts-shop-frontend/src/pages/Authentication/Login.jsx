@@ -8,7 +8,7 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
-import AuthenticationApi from "../../apis/AuthenticationAPI";
+import AuthenticationApi from "../../apis/AuthenticationApi";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";

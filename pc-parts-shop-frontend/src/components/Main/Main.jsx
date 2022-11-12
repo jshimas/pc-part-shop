@@ -1,7 +1,7 @@
 import { Container } from "@mui/material";
 import * as React from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../header/Header";
+import Header from "../Header/Header";
 
 export default function Main() {
   return (
