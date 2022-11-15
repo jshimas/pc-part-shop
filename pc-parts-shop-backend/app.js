@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const cookieparser = require('cookie-parser');
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const partRouter = require('./routes/partRouter');
@@ -13,7 +14,13 @@ const app = express();
 
 dotenv.config({ path: '.env' });
 app.use(express.json());
-app.use('*', cors());
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
+);
+app.use(cookieparser());
 
 app.use('/api/v1/parts', partRouter);
 app.use('/api/v1/builds', buildRouter);

@@ -18,21 +18,32 @@ import BuildAddPage from "./pages/BuildPages/BuildAddPage/BuildAddPage";
 import AccountsPage from "./pages/AccountsPage/AccountsPage";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectId } from "./app/slices/userSlice";
 import { fetchItems } from "./app/slices/cartSlice";
+import { fetchUser } from "./app/slices/userSlice";
 import SuccessfulCheckoutPage from "./pages/ShoppingCartPage/SuccessfulCheckoutPage";
 
 function App() {
-  const userId = useSelector(selectId);
   const dispatch = useDispatch();
-
   const itemsStatus = useSelector((state) => state.cart.status);
+  const userStatus = useSelector((state) => state.user.status);
+  const userId = useSelector((state) => state.user.id);
+  const userRole = useSelector((state) => state.user.role);
 
   useEffect(() => {
-    if (itemsStatus === "idle") {
-      dispatch(fetchItems(userId));
-    }
-  }, [itemsStatus, dispatch, userId]);
+    const getCurrentUser = () => {
+      if (userStatus === "idle") {
+        dispatch(fetchUser());
+      }
+    };
+    const getItems = () => {
+      if (itemsStatus === "idle" && userStatus === "succeeded") {
+        dispatch(fetchItems(userId));
+      }
+    };
+
+    getCurrentUser();
+    getItems();
+  }, [itemsStatus, userStatus, dispatch, userId, userRole]);
 
   return (
     <Routes>

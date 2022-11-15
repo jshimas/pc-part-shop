@@ -12,7 +12,6 @@ export default function SuccessfulCheckoutPage() {
 
   useEffect(() => {
     const createOrder = async () => {
-      console.log(userId, cartId);
       // Create Order
       const cartApi = new CartApi();
       await cartApi.createOrder(cartId, userId);

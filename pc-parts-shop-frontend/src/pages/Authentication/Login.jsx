@@ -10,12 +10,11 @@ import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import AuthenticationApi from "../../apis/AuthenticationApi";
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import { useSelector } from "react-redux";
-import { getAccessToken } from "./../../app/slices/userSlice";
+import { Alert, Snackbar } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "./../../app/slices/userSlice";
+import { resetCartStatus } from "../../app/slices/cartSlice";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,7 +22,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [openAlert, setOpenAlert] = useState(false);
-  const accToken = useSelector(getAccessToken);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -31,15 +30,17 @@ export default function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (loginParams) => {
+  const onSubmit = async (loginParams) => {
     setIsLoading(true);
-    const authApi = new AuthenticationApi(accToken);
+    const authApi = new AuthenticationApi();
     try {
-      const res = authApi.login(loginParams);
-      setLoggedUser(res.data);
-      console.log(loggedUser);
+      const res = await authApi.login(loginParams);
+      dispatch(userLogin(res.data.user));
+      dispatch(resetCartStatus());
+      setLoggedUser(res.data.user);
+      navigate("/");
     } catch (err) {
-      setError(err.response.data.message);
+      setError(err.response?.data.message);
     }
     setIsLoading(false);
     setOpenAlert(true);
@@ -52,23 +53,23 @@ export default function Login() {
       onClose={() => setOpenAlert(false)}
     >
       {error ? (
-        <MuiAlert
+        <Alert
           onClose={() => setOpenAlert(false)}
           severity="error"
           sx={{ width: "100%" }}
           variant="filled"
         >
           {error}
-        </MuiAlert>
+        </Alert>
       ) : (
-        <MuiAlert
+        <Alert
           onClose={() => setOpenAlert(false)}
           severity="success"
           sx={{ width: "100%" }}
           variant="filled"
         >
-          Welcome, ${loggedUser?.firstName}
-        </MuiAlert>
+          Welcome, {loggedUser?.fullName.split(" ")[0]}
+        </Alert>
       )}
     </Snackbar>
   );
@@ -168,7 +169,6 @@ export default function Login() {
       <Container component="main" maxWidth="xs">
         {renderSnackbar}
         {isLoading ? <CircularProgress /> : renderForm}
-        {loggedUser && <Navigate to="/" replace={true} />}
       </Container>
     </>
   );

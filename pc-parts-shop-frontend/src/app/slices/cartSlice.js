@@ -48,6 +48,12 @@ export const cartSlice = createSlice({
         items: [],
       };
     },
+    resetCartStatus(state, action) {
+      return {
+        ...state,
+        status: "idle",
+      };
+    },
     setCheckoutStatus(state, action) {
       return {
         ...state,
@@ -77,6 +83,7 @@ export const {
   decreaseQuantity,
   addItem,
   deleteItem,
+  resetCartStatus,
   setCheckoutStatus,
   deleteAllItems,
 } = cartSlice.actions;

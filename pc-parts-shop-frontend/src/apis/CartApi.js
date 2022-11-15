@@ -18,7 +18,6 @@ export default class CartApi extends Api {
   };
 
   addItem = async (cartId, partId) => {
-    console.log(cartId, partId);
     return super.init().post(`cart?cartId=${cartId}&partId=${partId}`);
   };
 

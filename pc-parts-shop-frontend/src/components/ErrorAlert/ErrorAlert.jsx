@@ -1,4 +1,4 @@
-import { Snackbar, MuiAlert } from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 import { useState } from "react";
 
 export default function ErrorAlert({ message }) {
@@ -9,14 +9,14 @@ export default function ErrorAlert({ message }) {
       autoHideDuration={3000}
       onClose={() => setAlertOpen(false)}
     >
-      <MuiAlert
+      <Alert
         onClose={() => setAlertOpen(false)}
         severity="error"
         sx={{ width: "100%" }}
         variant="filled"
       >
         {message}
-      </MuiAlert>
+      </Alert>
     </Snackbar>
   );
 }

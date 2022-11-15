@@ -35,7 +35,6 @@ export default function PartsTable({ rows }) {
     try {
       const cartApi = new CartApi();
       const response = await cartApi.addItem(cartId, partId);
-      console.log(response.data.item);
       dispatch(addItem(response.data.item));
     } catch (err) {
       console.log(err);

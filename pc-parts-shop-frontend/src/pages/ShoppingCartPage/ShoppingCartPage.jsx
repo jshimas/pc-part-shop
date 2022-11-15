@@ -4,13 +4,11 @@ import { useState } from "react";
 import ShoppingCartTable from "../../components/ShoppingCartList/ShoppingCartTable";
 import CartApi from "../../apis/CartApi";
 import { useDispatch, useSelector } from "react-redux";
-import { getAccessToken } from "./../../app/slices/userSlice";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { selectAllItems, setCheckoutStatus } from "../../app/slices/cartSlice";
 
 export default function ShoppingCartPage() {
-  const accToken = useSelector(getAccessToken);
   const dispatch = useDispatch();
   const [loadingCheckout, setLoadingCheckout] = useState(false);
   const [checkoutError, setCheckoutError] = useState(null);
@@ -27,7 +25,7 @@ export default function ShoppingCartPage() {
 
   const handleCheckout = async () => {
     setLoadingCheckout(true);
-    const cartApi = new CartApi(accToken);
+    const cartApi = new CartApi();
     try {
       const checkoutItems = items.map((item) => ({
         name: item.Part.name,

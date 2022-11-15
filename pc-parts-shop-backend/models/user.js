@@ -68,7 +68,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       fullName: {
         type: DataTypes.VIRTUAL,
-        allowNull: false,
         get() {
           return `${this.firstName} ${this.lastName}`;
         },
@@ -85,8 +84,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.beforeCreate(async (user) => {
-    this.password = await bcrypt.hash(user.password, 12);
-    this.passwordConfirm = undefined;
+    user.password = await bcrypt.hash(user.password, 12);
+    user.passwordConfirm = undefined;
   });
 
   return User;
