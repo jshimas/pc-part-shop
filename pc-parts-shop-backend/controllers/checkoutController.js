@@ -1,6 +1,6 @@
 const Stripe = require('stripe');
 const catchAsync = require('../utils/catchAsync');
-const { OrderItem, Order } = require('../models');
+const { OrderItem, Order, Part } = require('../models');
 
 const createLineItems = (items) =>
   items.map((item) => ({
@@ -37,8 +37,8 @@ exports.getCheckoutSession = catchAsync(async (req, res) => {
 exports.createOrder = catchAsync(async (req, res) => {
   const { cartId, userId } = req.query;
 
-  const items = await OrderItem.findAll({ where: { cartId } });
-
+  const items = await OrderItem.findAll({ where: { cartId }, include: Part });
+  console.log(items);
   // Create Order
   const order = await Order.create({
     userId: userId,
@@ -49,8 +49,12 @@ exports.createOrder = catchAsync(async (req, res) => {
     ),
   });
 
+  console.log('order: ', order);
+
   // Remove items from the shopping cart and add to Order
-  await items.update({ cartId: null, orderId: order.id });
+  items.forEach(
+    async (item) => await item.update({ cartId: null, orderId: order.id })
+  );
 
   res.status(201).json({ order });
 });

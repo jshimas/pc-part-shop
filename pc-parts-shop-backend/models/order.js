@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL,
         allowNull: false,
       },
-      statusEnum: {
+      status: {
         type: DataTypes.INTEGER,
         defaultValue: 1,
       },

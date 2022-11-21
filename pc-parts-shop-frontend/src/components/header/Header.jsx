@@ -26,6 +26,7 @@ import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
 import AuthenticationApi from "../../apis/AuthenticationApi";
+import useAlert from "../../hooks/useAlert";
 
 const parts = [
   {
@@ -53,9 +54,10 @@ const parts = [
 export default function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { setAlert } = useAlert();
   const userRole = useSelector(selectRole);
 
-  const itemsCount = useSelector((state) => state.cart.items.length);
+  const itemsCount = useSelector((state) => state.cart.items?.length);
   const itemsStatus = useSelector((state) => state.cart.status);
 
   const [anchorElProfileMenu, setAnchorElProfileMenu] = React.useState(null);
@@ -84,9 +86,10 @@ export default function Header() {
       const authApi = new AuthenticationApi();
       await authApi.logout();
       dispatch(userLogout());
+      setAlert("You have been logged out.", "info");
       navigate("/");
     } catch (err) {
-      console.log(err);
+      setAlert(err, "error");
     }
   };
 
@@ -153,6 +156,7 @@ export default function Header() {
               >
                 {parts.map((part) => (
                   <MenuItem
+                    key={part.name}
                     onClick={function () {
                       navigate(`/${part.link}`);
                     }}

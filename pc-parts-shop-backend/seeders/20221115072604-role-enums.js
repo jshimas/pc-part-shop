@@ -2,8 +2,8 @@
 module.exports = {
   async up(queryInterface) {
     await queryInterface.bulkInsert('user_role_enums', [
-      { id: 1, role: 'admin', createdAt: new Date(), updatedAt: new Date() },
-      { id: 2, role: 'user', createdAt: new Date(), updatedAt: new Date() },
+      { id: 1, role: 'user', createdAt: new Date(), updatedAt: new Date() },
+      { id: 2, role: 'admin', createdAt: new Date(), updatedAt: new Date() },
     ]);
   },
 

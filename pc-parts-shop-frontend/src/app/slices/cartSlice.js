@@ -43,9 +43,11 @@ export const cartSlice = createSlice({
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
     deleteAllItems(state, action) {
+      console.log("deleteItems");
       return {
         ...state,
         items: [],
+        status: "idle",
       };
     },
     resetCartStatus(state, action) {

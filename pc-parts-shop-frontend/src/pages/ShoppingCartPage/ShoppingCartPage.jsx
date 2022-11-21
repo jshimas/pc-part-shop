@@ -3,25 +3,18 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import ShoppingCartTable from "../../components/ShoppingCartList/ShoppingCartTable";
 import CartApi from "../../apis/CartApi";
-import { useDispatch, useSelector } from "react-redux";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import { selectAllItems, setCheckoutStatus } from "../../app/slices/cartSlice";
+import { useSelector } from "react-redux";
+import { selectAllItems } from "../../app/slices/cartSlice";
+import useAlert from "../../hooks/useAlert";
 
 export default function ShoppingCartPage() {
-  const dispatch = useDispatch();
+  const { setAlert } = useAlert();
   const [loadingCheckout, setLoadingCheckout] = useState(false);
-  const [checkoutError, setCheckoutError] = useState(null);
-  const [openAlert, setOpenAlert] = useState(false);
 
   const items = useSelector(selectAllItems);
   const cartId = useSelector((state) => state.cart.id);
   const user = useSelector((state) => state.user);
   const itemsStatus = useSelector((state) => state.cart.status);
-  const fecthError = useSelector((state) => state.cart.error);
-
-  const errors = [checkoutError, fecthError];
-  const errorsExists = errors.some((err) => !!err);
 
   const handleCheckout = async () => {
     setLoadingCheckout(true);
@@ -33,38 +26,17 @@ export default function ShoppingCartPage() {
         quantity: item.quantity,
       }));
       const response = await cartApi.checkout(user, cartId, checkoutItems);
-      if (response.data.session) dispatch(setCheckoutStatus("success"));
+      // if (!!response.data.session) dispatch(setCheckoutStatus("success"));
       window.location.href = response.data.session.url;
     } catch (err) {
-      setCheckoutError(err.response.data.message);
-      setOpenAlert(true);
+      setAlert(err.response.data.message, "error");
     } finally {
       setLoadingCheckout(false);
     }
   };
 
-  const renderSnackbar = (
-    <Snackbar
-      open={openAlert}
-      autoHideDuration={3000}
-      onClose={() => setOpenAlert(false)}
-    >
-      {errorsExists && (
-        <MuiAlert
-          onClose={() => setOpenAlert(false)}
-          severity="error"
-          sx={{ width: "100%" }}
-          variant="filled"
-        >
-          {errors.join(" ")}
-        </MuiAlert>
-      )}
-    </Snackbar>
-  );
-
   return (
     <>
-      {renderSnackbar}
       <Container>
         <Typography
           variant="h3"

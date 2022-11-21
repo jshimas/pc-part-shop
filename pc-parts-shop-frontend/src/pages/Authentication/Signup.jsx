@@ -11,14 +11,15 @@ import { useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import AuthenticationApi from "../../apis/AuthenticationApi";
 import { useState } from "react";
-import { Alert, CircularProgress, Snackbar } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import useAlert from "../../hooks/useAlert";
 
 export default function SignUp() {
+  const { setAlert } = useAlert();
   const navigate = useNavigate();
   const [signedUser, setSignedUser] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [openAlert, setOpenAlert] = useState(false);
 
   const {
     register,
@@ -34,40 +35,13 @@ export default function SignUp() {
     try {
       const res = await authApi.signup(userData);
       setSignedUser(res.data);
+      setAlert("Account created successfully", "success");
     } catch (err) {
-      setError(err.response.data.message);
+      setAlert(err.response.data.message, "error");
     } finally {
       setLoading(false);
     }
   };
-
-  const renderSnackbar = (
-    <Snackbar
-      open={openAlert}
-      autoHideDuration={3000}
-      onClose={() => setOpenAlert(false)}
-    >
-      {error ? (
-        <Alert
-          onClose={() => setOpenAlert(false)}
-          severity="error"
-          sx={{ width: "100%" }}
-          variant="filled"
-        >
-          {error}
-        </Alert>
-      ) : (
-        <Alert
-          onClose={() => setOpenAlert(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-          variant="filled"
-        >
-          User succesfully created!
-        </Alert>
-      )}
-    </Snackbar>
-  );
 
   const renderForm = (
     <Container component="main" maxWidth="xs">
@@ -239,7 +213,6 @@ export default function SignUp() {
       >
         To Home Page
       </Button>
-      {renderSnackbar}
       {renderForm}
       {signedUser && <Navigate to="/login" replace={true} />}
     </Box>

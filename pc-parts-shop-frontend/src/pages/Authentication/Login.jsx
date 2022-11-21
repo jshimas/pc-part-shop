@@ -11,17 +11,15 @@ import { useForm } from "react-hook-form";
 import AuthenticationApi from "../../apis/AuthenticationApi";
 import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Alert, Snackbar } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userLogin } from "./../../app/slices/userSlice";
 import { resetCartStatus } from "../../app/slices/cartSlice";
+import useAlert from "../../hooks/useAlert";
 
 export default function Login() {
+  const { setAlert } = useAlert();
   const navigate = useNavigate();
-  const [loggedUser, setLoggedUser] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [openAlert, setOpenAlert] = useState(false);
   const dispatch = useDispatch();
 
   const {
@@ -37,42 +35,13 @@ export default function Login() {
       const res = await authApi.login(loginParams);
       dispatch(userLogin(res.data.user));
       dispatch(resetCartStatus());
-      setLoggedUser(res.data.user);
+      setAlert(`Welcome, ${res.data.user?.fullName.split(" ")[0]}!`, "info");
       navigate("/");
     } catch (err) {
-      setError(err.response?.data.message);
+      setAlert(err.response?.data.message, "error");
     }
     setIsLoading(false);
-    setOpenAlert(true);
   };
-
-  const renderSnackbar = (
-    <Snackbar
-      open={openAlert}
-      autoHideDuration={3000}
-      onClose={() => setOpenAlert(false)}
-    >
-      {error ? (
-        <Alert
-          onClose={() => setOpenAlert(false)}
-          severity="error"
-          sx={{ width: "100%" }}
-          variant="filled"
-        >
-          {error}
-        </Alert>
-      ) : (
-        <Alert
-          onClose={() => setOpenAlert(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-          variant="filled"
-        >
-          Welcome, {loggedUser?.fullName.split(" ")[0]}
-        </Alert>
-      )}
-    </Snackbar>
-  );
 
   const renderForm = (
     <>
@@ -167,7 +136,6 @@ export default function Login() {
         To Home Page
       </Button>
       <Container component="main" maxWidth="xs">
-        {renderSnackbar}
         {isLoading ? <CircularProgress /> : renderForm}
       </Container>
     </>
