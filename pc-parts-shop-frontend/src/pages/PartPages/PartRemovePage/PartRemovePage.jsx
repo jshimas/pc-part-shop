@@ -1,7 +1,6 @@
 import * as React from "react";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { selectRole } from "../../../app/slices/userSlice";
 import { roles } from "../../../roles";
 
@@ -10,7 +9,6 @@ import { useSelector } from "react-redux";
 export default function PartRemovePage() {
   const { type, id } = useParams();
 
-  
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -23,21 +21,17 @@ export default function PartRemovePage() {
         {role === roles.ADMIN && (
           <Button
             variant="outlined"
-            
             onClick={() => navigate(`${pathname}/edit`)}
-
           >
-            Yes 
+            Yes
           </Button>
         )}
-              {role === roles.ADMIN && (
+        {role === roles.ADMIN && (
           <Button
             variant="outlined"
-            
             onClick={() => navigate(`${pathname}/edit`)}
-
           >
-            No 
+            No
           </Button>
         )}
       </h3>

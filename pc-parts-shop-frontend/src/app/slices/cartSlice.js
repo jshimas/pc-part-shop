@@ -43,9 +43,17 @@ export const cartSlice = createSlice({
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
     deleteAllItems(state, action) {
+      console.log("deleteItems");
       return {
         ...state,
         items: [],
+        status: "idle",
+      };
+    },
+    resetCartStatus(state, action) {
+      return {
+        ...state,
+        status: "idle",
       };
     },
     setCheckoutStatus(state, action) {
@@ -77,6 +85,7 @@ export const {
   decreaseQuantity,
   addItem,
   deleteItem,
+  resetCartStatus,
   setCheckoutStatus,
   deleteAllItems,
 } = cartSlice.actions;

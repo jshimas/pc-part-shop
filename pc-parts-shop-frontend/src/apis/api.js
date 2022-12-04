@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export default class Api {
-  constructor(accessToken = null) {
+  constructor() {
     this.client = null;
-    this.api_token = accessToken;
+    this.api_token = null;
     this.api_url = "http://127.0.0.1:8000/api/v1/";
   }
   init() {
@@ -19,6 +19,7 @@ export default class Api {
       baseURL: this.api_url,
       timeout: 31000,
       headers: headers,
+      withCredentials: true,
     });
 
     return this.client;

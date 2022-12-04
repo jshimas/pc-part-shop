@@ -1,6 +1,6 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { selectRole } from "../../app/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectRole, userLogout } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,7 +14,6 @@ import {
   ListItemIcon,
   Divider,
   Button,
-  ListItemButton,
   ListItemText,
   MenuItem,
 } from "@mui/material";
@@ -26,6 +25,8 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
+import AuthenticationApi from "../../apis/AuthenticationApi";
+import useAlert from "../../hooks/useAlert";
 
 const parts = [
   {
@@ -50,11 +51,13 @@ const parts = [
   },
 ];
 
-function Header() {
+export default function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { setAlert } = useAlert();
   const userRole = useSelector(selectRole);
 
-  const itemsCount = useSelector((state) => state.cart.items.length);
+  const itemsCount = useSelector((state) => state.cart.items?.length);
   const itemsStatus = useSelector((state) => state.cart.status);
 
   const [anchorElProfileMenu, setAnchorElProfileMenu] = React.useState(null);
@@ -76,6 +79,18 @@ function Header() {
 
   const handleProfileClose = () => {
     setAnchorElProfileMenu(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const authApi = new AuthenticationApi();
+      await authApi.logout();
+      dispatch(userLogout());
+      setAlert("You have been logged out.", "info");
+      navigate("/");
+    } catch (err) {
+      setAlert(err, "error");
+    }
   };
 
   return (
@@ -141,6 +156,7 @@ function Header() {
               >
                 {parts.map((part) => (
                   <MenuItem
+                    key={part.name}
                     onClick={function () {
                       navigate(`/${part.link}`);
                     }}
@@ -234,7 +250,7 @@ function Header() {
                       </MenuItem>
                     )}
                     <Divider />
-                    <MenuItem onClick={() => navigate("/login")}>
+                    <MenuItem onClick={handleLogout}>
                       <ListItemIcon>
                         <Logout fontSize="small" />
                       </ListItemIcon>
@@ -250,5 +266,3 @@ function Header() {
     </>
   );
 }
-
-export default Header;
