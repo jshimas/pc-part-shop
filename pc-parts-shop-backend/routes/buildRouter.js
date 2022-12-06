@@ -3,9 +3,8 @@ const buildController = require('../controllers/buildController');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(buildController.getAllBuilds)
-  .post(buildController.createBuild);
+router.get('/getAllBuilds', buildController.getAllBuilds);
+router.get('/getBuild', buildController.getBuild);
+router.post('/create', buildController.createBuild);
 
 module.exports = router;

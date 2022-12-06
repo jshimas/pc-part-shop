@@ -2,9 +2,61 @@ import * as React from "react";
 import { useParams } from "react-router-dom";
 import  "./buildPage.css";
 import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
+import PartsTable from "../../../components/PartsTable/PartsTable";
+import BuildApi from "../../../apis/BuildApi";
 
 export default function BuildPage() {
   const { id } = useParams();
+  const allParts = ["memory", "cpu", "ram", "psu", "gpu", "motherboard", "cooler"];
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(null);
+  const [name, setName] = useState(null);
+  const [parts, setParts] = useState(null);
+
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const BiuldApi = new BuildApi();
+        const response = await  BiuldApi.getBuild(id);
+        setName(response.data.buildName);
+        setData(response.data.parts);
+        setParts(response.data.left);
+        setError(null);
+      } catch (err) {
+        setError(err.response.data.message);
+        setData(null);
+      }
+      setLoading(false);
+    };
+    getData();
+  }, [id]);
+
+  // function missingParts(allParts, currentParts)
+  // {
+  //   let rez = []
+  //   for(const examine of allParts)
+  //   {
+  //     let cond = false;
+  //     for(const current of currentParts) // check if part was picked
+  //     {
+  //       if(examine === current)
+  //       {
+  //         cond = true;
+  //         break;
+  //       }
+  //     }
+  //     if(cond === false) // part wasn't picked so was added to the list
+  //     {
+  //       rez.push(examine);
+  //     }
+  //   }
+  //   return rez;
+  // }
+
   return (
     <div>
       <div>
@@ -13,10 +65,13 @@ export default function BuildPage() {
           variant="h3"
           sx={{ borderBottom: "1px solid gray", pb: 1, my: 4 }}
           >
-            Build Page. Build ID: {id}
+            Build "{name}" Page. 
           </Typography>
         </center>
       </div>
+      <center>
+        {loading ? <CircularProgress /> : <PartsTable rows={data} />}
+      </center>
       <center>
       <table>
         <thread>
