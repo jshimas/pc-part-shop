@@ -3,29 +3,76 @@ import  "./buildAddPage.css";
 import { TextField } from "@mui/material";
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
+import { Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import BuildApi from "../../../apis/BuildApi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function BuildAddPage() {
+  const [name, setName] = useState(null);
+  const [id, setId] = useState(null);
+  const [error, setError] = useState(null);
+  const userId = useSelector((state) => state.user.id);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const BiuldApi = new BuildApi();
+  //       const response = await  BiuldApi.createBuild(name, userId);
+  //       setId(response.data.id);
+  //       setError(null);
+  //     } catch (err) {
+  //       setError(err.response.data.message);
+  //       setId(null);
+  //     }
+  //   };
+  //   getData();
+  // }, [id]);
+
+  const handleClick = async () => {
+    try {
+      if(name === null || name === ""){
+        setName(undefined);
+        setName(undefined);
+      }
+      const BiuldApi = new BuildApi();
+      const response = await  BiuldApi.createBuild(name, userId);
+      navigate(`/builds/${response.data.id}`);
+    } catch (err) {
+      setError(err.response.data.message);
+      console.log(err);
+    }
+  };
+
   return (
     <div>
-      <div>
-          <h3 >Make your own build</h3>
-      </div>
+      <Typography sx={{ mt: 3, fontWeight: 'bold'}}>
+          Make your own build
+      </Typography>
       <div>
         <TextField
+          sx={{ mt: 3 }}
           hiddenLabel
           id="filled-hidden-label-normal"
-          defaultValue="enter build name"
+          label="enter build name"
           variant="filled"
+          onChange={(event) => {setName(event.target.value);}}
         />
       </div>
 
-      <Button href="/builds/:id" variant="contained" endIcon={<SendIcon />}>
+      <Button sx={{ mt: 3 }} variant="contained" endIcon={<SendIcon />} onClick={handleClick}>
       Make build
       </Button>
 
-      <div>
+      <Typography sx={{ mt: 3}}>
         Problems:
-      </div>
+      </Typography>
+      <Typography sx={{ mt: 3, color:'red'}}>
+        {error}
+      </Typography>
     </div>
   );
 }

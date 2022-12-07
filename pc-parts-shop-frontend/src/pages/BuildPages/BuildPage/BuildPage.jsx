@@ -4,7 +4,8 @@ import  "./buildPage.css";
 import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@mui/material";
-import PartsTable from "../../../components/PartsTable/PartsTable";
+// import PartsTable from "../../../components/PartsTable/PartsTable";
+import BuildTable from "../../../components/BuildTable/BuildTable";
 import BuildApi from "../../../apis/BuildApi";
 
 export default function BuildPage() {
@@ -70,10 +71,10 @@ export default function BuildPage() {
         </center>
       </div>
       <center>
-        {loading ? <CircularProgress /> : <PartsTable rows={data} />}
+        {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts}/>}
       </center>
       <center>
-      <table>
+      {/* <table>
         <thread>
           <tr>
             <th scope="col" width="13%">Component</th>
@@ -142,7 +143,7 @@ export default function BuildPage() {
           </tr>
           </tbody>
         </thread>
-      </table>
+      </table> */}
       </center>
     </div>
   );
