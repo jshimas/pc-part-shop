@@ -52,24 +52,26 @@ exports.getBuild = catchAsync(async (req, res, next) => {
     ids.push(bpart.partId);
   }
 
+  // get parts who belong to the build
   let parts = [];
   for (const anId of ids) {
     parts.push(await Part.findOne({ where: { id: anId } }));
   }
 
-  let hold = []
+  // get part type who belong in the build
+  let hold = [];
   for (const name of parts) {
     hold.push(name.type);
   }
-  const left = filtering(allParts, hold);
+  const left = filtering(allParts, hold); // get part types who are still missing until the full build
 
   // const parts = await Part.findAll({ where: { id: bParts.partId } });
   res.status(200).json({
     status: 'success',
     buildId: build.id,
     buildName: build.name,
-    left,
-    parts,
+    left, // parts who still can be added
+    parts, // parts who are in the build
   });
 });
 
@@ -95,4 +97,24 @@ exports.createBuild = catchAsync(async (req, res, next) => {
   } else {
     return next(new AppError('Build name already taken'));
   }
+});
+
+exports.removeBuild = catchAsync(async (req, res, next) => {
+  const { buildId } = req.query;
+  const build = await Build.findOne({ where: { id: buildId } });
+
+  if (!build) return next(new AppError('No build found to destroy'));
+
+  //remove parts from the build
+  const bParts = await BuildPart.findAll({ where: { buildId: buildId } });
+  if(bParts.length !== 0){
+  for (const bpart of bParts) {
+      await bpart.destroy({ force: true });
+    }
+  }
+
+  //remove the build
+  await build.destroy({ force: true });
+
+  res.status(204).json({});
 });

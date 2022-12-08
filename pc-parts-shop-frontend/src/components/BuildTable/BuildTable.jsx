@@ -46,6 +46,7 @@ export default function BuildTable({ rows, missing }) {
       <Table aria-label="parts table">
         <TableHead>
           <TableRow>
+            <TableCell>Part name</TableCell>
             <TableCell sx={{ width: "35%" }}>Name</TableCell>
             <TableCell align="right" sx={{ width: "10%" }}>
               Manufacturer
@@ -64,6 +65,7 @@ export default function BuildTable({ rows, missing }) {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.name}>
+              <TableCell>{row.type}</TableCell>
               <TableCell component="th" scope="row">
                 <Button
                   variant="text"
@@ -111,6 +113,14 @@ export default function BuildTable({ rows, missing }) {
           ))} */}
         </TableBody>
       </Table>
+      <center>
+          <Typography
+          variant="h4"
+          sx={{ pt: 5, my: 4 }}
+          >
+            Available part types
+          </Typography>
+        </center>
       <Table sx={{ mt: 10 }}>
         <TableHead>
           <TableRow>
@@ -123,7 +133,7 @@ export default function BuildTable({ rows, missing }) {
             <TableCell align="right">
             {""}
             </TableCell>
-            <TableCell align="right">
+            <TableCell align="right" sx={{ pr: 4 }}>
             function 
             </TableCell>
             <TableCell key={""} align="right">
@@ -138,7 +148,7 @@ export default function BuildTable({ rows, missing }) {
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right">
-                <Button href={"/parts/" + row}>
+                <Button href={"/parts/" + row /* TODO make sure to add buildID later to addPartToBuild()*/ }> 
                   ADD Component
                 </Button>
               </TableCell>

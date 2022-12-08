@@ -8,4 +8,8 @@ export default class BuildApi extends Api {
   createBuild = (name, userId) => {
     return super.init().post(`builds/create?name=${name}&userId=${userId}`);
   };
+
+  deleteBuild = (buildId) => {
+    return super.init().delete(`builds/remove?buildId=${buildId}`);
+  };
 }

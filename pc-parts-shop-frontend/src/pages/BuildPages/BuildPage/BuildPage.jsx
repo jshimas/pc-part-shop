@@ -7,6 +7,8 @@ import { CircularProgress } from "@mui/material";
 // import PartsTable from "../../../components/PartsTable/PartsTable";
 import BuildTable from "../../../components/BuildTable/BuildTable";
 import BuildApi from "../../../apis/BuildApi";
+import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
 
 export default function BuildPage() {
   const { id } = useParams();
@@ -16,7 +18,7 @@ export default function BuildPage() {
   const [data, setData] = useState(null);
   const [name, setName] = useState(null);
   const [parts, setParts] = useState(null);
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -36,6 +38,16 @@ export default function BuildPage() {
     getData();
   }, [id]);
 
+  const handleClick = async () => {
+    try {
+      const BiuldApi = new BuildApi();
+      const response = await  BiuldApi.deleteBuild(id);
+      navigate(`/builds`);
+    } catch (err) {
+      setError(err.response.data.message);
+      console.log(err);
+    }
+  };
   // function missingParts(allParts, currentParts)
   // {
   //   let rez = []
@@ -74,76 +86,9 @@ export default function BuildPage() {
         {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts}/>}
       </center>
       <center>
-      {/* <table>
-        <thread>
-          <tr>
-            <th scope="col" width="13%">Component</th>
-            <th scope="col" width="9%">Product</th>
-            <th scope="col" width="47%">Title</th>
-            <th scope="col" width="7%">Price</th>
-            <th scope="col" width="18%">Product Link</th>
-            <th scope="col" width="7%">Remove</th>
-          </tr>
-          <tbody>
-          <tr class="items">
-            <td class="component" >
-              <b><a href="/">Processor</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          <tr class="items">
-            <td class="component">
-              <b><a href="/">Motherboard</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          <tr class="items">
-            <td class="component">
-              <b><a href="/">CPU Cooler</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          <tr class="items">
-            <td class="component">
-              <b><a href="/">GPU</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          <tr class="items">
-            <td class="component">
-              <b><a href="/">RAM</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          <tr class="items">
-            <td class="component">
-              <b><a href="/">Storage</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          <tr class="items">
-            <td class="component">
-              <b><a href="/">Power suply</a></b>
-            </td>
-            <td class="select-comp" colspan="7">
-              <a class="comp-button" href="/">ADD Component</a>
-            </td>
-          </tr>
-          </tbody>
-        </thread>
-      </table> */}
+        <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick}>
+          Delete Build
+        </Button>
       </center>
     </div>
   );

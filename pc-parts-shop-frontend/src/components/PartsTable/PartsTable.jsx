@@ -18,11 +18,13 @@ import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
 import CartApi from "../../apis/CartApi";
 import { addItem } from "../../app/slices/cartSlice";
+import { useEffect, useState } from "react";
 
 export default function PartsTable({ rows }) {
   const role = useSelector(selectRole);
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
+  const [id, setId] = useState(null);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -74,6 +76,7 @@ export default function PartsTable({ rows }) {
               {role !== roles.GUEST && (
                 <TableCell align="right">
                   <Box sx={{ display: "inline-flex", gap: 2 }}>
+                  {id !== null && (
                     <Button
                       onClick={handleClick}
                       variant="contained"
@@ -81,6 +84,7 @@ export default function PartsTable({ rows }) {
                     >
                       Add to build
                     </Button>
+                    )}
                     <Button
                       onClick={() => addToCart(row.id)}
                       variant="outlined"
