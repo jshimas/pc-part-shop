@@ -1,4 +1,5 @@
 import * as React from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
   TableBody,
@@ -17,8 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
 import CartApi from "../../apis/CartApi";
-import { addItem } from "../../app/slices/cartSlice";
+import { addItem, deleteItem } from "../../app/slices/cartSlice";
 import { useEffect, useState } from "react";
+import PartsApi from "../../apis/PartsApi";
 
 export default function PartsTable({ rows }) {
   const role = useSelector(selectRole);
@@ -38,6 +40,16 @@ export default function PartsTable({ rows }) {
       const cartApi = new CartApi();
       const response = await cartApi.addItem(cartId, partId);
       dispatch(addItem(response.data.item));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const removePart = async (partId) => {
+    try {
+      const partsApi = new PartsApi();
+      const response = await partsApi.deletePart(partId);
+      dispatch(removePart(response.data.item));
     } catch (err) {
       console.log(err);
     }
@@ -76,15 +88,22 @@ export default function PartsTable({ rows }) {
               {role !== roles.GUEST && (
                 <TableCell align="right">
                   <Box sx={{ display: "inline-flex", gap: 2 }}>
-                  {id !== null && (
-                    <Button
-                      onClick={handleClick}
-                      variant="contained"
-                      startIcon={<AddIcon />}
-                    >
-                      Add to build
-                    </Button>
+                    {id !== null && (
+                      <Button
+                        onClick={handleClick}
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                      >
+                        Add to build
+                      </Button>
                     )}
+                    <Button
+                      onClick={() => removePart(row.id)}
+                      variant="outlined"
+                      startIcon={<DeleteIcon />}
+                    >
+                      Delete
+                    </Button>
                     <Button
                       onClick={() => addToCart(row.id)}
                       variant="outlined"

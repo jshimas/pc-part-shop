@@ -1,6 +1,12 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
-import { Box, Button, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Typography,
+  TextField,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PartsApi from "../../../apis/PartsApi";
 import { useEffect, useState } from "react";
@@ -39,7 +45,64 @@ export default function PartAddPage() {
       >
         Add {type.split("-").join(" ")}
       </Button>
+      <Button
+        variant="outlined"
+        startIcon={<AddIcon />}
+        onClick={() => partsApi1.deletePart(8)}
+      >
+        remove {type.split("-").join(" ")}
+      </Button>
       )
+      <div>
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="enter part name"
+          variant="filled"
+          onChange={(event) => {}}
+        />
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="enter build name"
+          variant="filled"
+          onChange={(event) => {}}
+        />
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="enter build name"
+          variant="filled"
+          onChange={(event) => {}}
+        />
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="enter build name"
+          variant="filled"
+          onChange={(event) => {}}
+        />
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="enter build name"
+          variant="filled"
+          onChange={(event) => {}}
+        />
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="enter build name"
+          variant="filled"
+          onChange={(event) => {}}
+        />
+      </div>
     </div>
   );
 }

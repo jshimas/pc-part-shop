@@ -22,7 +22,6 @@ exports.getParts = catchAsync(async (req, res, next) => {
 
 exports.createPart = catchAsync(async (req, res) => {
   const newPart = await Part.create({
-    id: 8,
     name: 'createTest',
     type: 'cpu',
     manufacturer: 'createTest',
@@ -33,18 +32,24 @@ exports.createPart = catchAsync(async (req, res) => {
     updatedAt: 'createTest',
   });
 
-  res.status(200).json({
+  res.status(201).json({
     status: 'success',
     message: 'Part Added!',
+    newPart,
   });
 });
 
-exports.deletePart = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'This route is not yet defined!',
-  });
-};
+exports.deletePart = catchAsync(async (req, res, next) => {
+  const { partId } = req.query;
+
+  const partToDestroy = await Part.findOne({ where: { id: partId } });
+
+  if (!partToDestroy) return next(new AppError('No part to destroy'));
+
+  await partToDestroy.destroy({ force: true });
+
+  res.status(204).json({});
+});
 
 exports.editPart = (req, res) => {
   res.status(500).json({

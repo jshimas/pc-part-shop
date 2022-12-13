@@ -55,15 +55,15 @@ export default function PartListPage() {
           {type === "cpu" ? type.toUpperCase() : capitalizeFirstLetter(type)}{" "}
           parts
         </h1>
-        role === roles.ADMIN && (
-        <Button
-          variant="outlined"
-          startIcon={<AddIcon />}
-          onClick={() => navigate(`${pathname}/new`)}
-        >
-          Add {type.split("-").join(" ")}
-        </Button>
-        )
+        {role === roles.ADMIN && (
+          <Button
+            variant="outlined"
+            startIcon={<AddIcon />}
+            onClick={() => navigate(`${pathname}/new`)}
+          >
+            Add {type.split("-").join(" ")}
+          </Button>
+        )}
         {role === roles.ADMIN && (
           <Button
             variant="outlined"
