@@ -25,7 +25,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Logout from "@mui/icons-material/Logout";
 import Login from "@mui/icons-material/Login";
 import DeveloperBoardIcon from "@mui/icons-material/DeveloperBoard";
-import AuthenticationApi from "../../apis/AuthenticationApi";
+import AuthenticationApi from "../../apis/AuthenticationAPI";
 import useAlert from "../../hooks/useAlert";
 
 const parts = [

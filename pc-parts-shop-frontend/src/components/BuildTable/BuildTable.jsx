@@ -16,15 +16,13 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
-import CartApi from "../../apis/CartApi";
-import { addItem } from "../../app/slices/cartSlice";
-import { useEffect, useState } from "react";
+// import CartApi from "../../../apis/CartApi";
+// import { addItem } from "../../../App/slices/cartSlice";
 
-export default function PartsTable({ rows }) {
+export default function BuildTable({ rows, missing }) {
   const role = useSelector(selectRole);
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
-  const [id, setId] = useState(null);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -33,27 +31,32 @@ export default function PartsTable({ rows }) {
     navigate(`/builds/new`);
   };
 
-  const addToCart = async (partId) => {
-    try {
-      const cartApi = new CartApi();
-      const response = await cartApi.addItem(cartId, partId);
-      dispatch(addItem(response.data.item));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+//   const addToCart = async (partId) => {
+//     try {
+//       const cartApi = new CartApi();
+//       const response = await cartApi.addItem(cartId, partId);
+//       dispatch(addItem(response.data.item));
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
 
   const table = (
     <TableContainer sx={{ width: 1000, margin: "0 auto" }}>
       <Table aria-label="parts table">
         <TableHead>
           <TableRow>
+            <TableCell>Part name</TableCell>
             <TableCell sx={{ width: "35%" }}>Name</TableCell>
             <TableCell align="right" sx={{ width: "10%" }}>
               Manufacturer
             </TableCell>
-            <TableCell align="right">Release date</TableCell>
-            <TableCell align="right">Price</TableCell>
+            <TableCell align="right">
+                Release date
+            </TableCell>
+            <TableCell align="right">
+                Price
+            </TableCell>
             <TableCell key={""} align="right">
               {""}
             </TableCell>
@@ -62,6 +65,7 @@ export default function PartsTable({ rows }) {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.name}>
+              <TableCell>{row.type}</TableCell>
               <TableCell component="th" scope="row">
                 <Button
                   variant="text"
@@ -73,10 +77,9 @@ export default function PartsTable({ rows }) {
               <TableCell align="right">{row.manufacturer}</TableCell>
               <TableCell align="right">{row.releaseDate}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              {role !== roles.GUEST && (
+              {/* {role !== roles.GUEST && (
                 <TableCell align="right">
                   <Box sx={{ display: "inline-flex", gap: 2 }}>
-                  {id !== null && (
                     <Button
                       onClick={handleClick}
                       variant="contained"
@@ -84,7 +87,6 @@ export default function PartsTable({ rows }) {
                     >
                       Add to build
                     </Button>
-                    )}
                     <Button
                       onClick={() => addToCart(row.id)}
                       variant="outlined"
@@ -94,7 +96,62 @@ export default function PartsTable({ rows }) {
                     </Button>
                   </Box>
                 </TableCell>
-              )}
+              )} */}
+            </TableRow>
+          ))}
+          {/* {missing.map((row) => (
+            <TableRow>
+              <TableCell component="th" scope="row">{row}</TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right">
+                <Button href={"/parts/" + row}>
+                  ADD Component
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))} */}
+        </TableBody>
+      </Table>
+      <center>
+          <Typography
+          variant="h4"
+          sx={{ pt: 5, my: 4 }}
+          >
+            Available part types
+          </Typography>
+        </center>
+      <Table sx={{ mt: 10 }}>
+        <TableHead>
+          <TableRow>
+            <TableCell sx={{ width: "35%" }}>
+              Part name
+            </TableCell>
+            <TableCell align="right" sx={{ width: "10%" }}>
+            {""}
+            </TableCell>
+            <TableCell align="right">
+            {""}
+            </TableCell>
+            <TableCell align="right" sx={{ pr: 4 }}>
+            function 
+            </TableCell>
+            <TableCell key={""} align="right">
+            {""}
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {missing.map((row) => (
+            <TableRow>
+              <TableCell component="th" scope="row">{row}</TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right"></TableCell>
+              <TableCell align="right">
+                <Button href={"/parts/" + row /* TODO make sure to add buildID later to addPartToBuild()*/ }> 
+                  ADD Component
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

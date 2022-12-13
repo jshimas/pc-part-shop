@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import AuthenticationApi from "../../apis/AuthenticationApi";
+import AuthenticationApi from "../../apis/AuthenticationAPI";
 
 const initialState = {
   role: "guest",

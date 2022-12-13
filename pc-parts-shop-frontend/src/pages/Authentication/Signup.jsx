@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import AuthenticationApi from "../../apis/AuthenticationApi";
+import AuthenticationApi from "../../apis/AuthenticationAPI";
 import { useState } from "react";
 import { CircularProgress } from "@mui/material";
 import useAlert from "../../hooks/useAlert";
