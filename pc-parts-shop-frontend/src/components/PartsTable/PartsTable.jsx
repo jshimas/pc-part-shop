@@ -83,7 +83,7 @@ export default function PartsTable({ rows, id }) {
               {role !== roles.GUEST && (
                 <TableCell align="right">
                   <Box sx={{ display: "inline-flex", gap: 2 }}>
-                  {(id !== null && id !== undefined) && (
+                  {(id !== "null" && id !== undefined) && (
                     <Button
                       onClick={() => handleClick(id, row.id)}
                       variant="contained"

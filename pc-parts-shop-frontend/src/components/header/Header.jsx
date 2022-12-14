@@ -158,7 +158,7 @@ export default function Header() {
                   <MenuItem
                     key={part.name}
                     onClick={function () {
-                      navigate(`/${part.link}`);
+                      navigate(`/${part.link}/null`);
                     }}
                   >
                     {part.name}
