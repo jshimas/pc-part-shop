@@ -118,3 +118,28 @@ exports.removeBuild = catchAsync(async (req, res, next) => {
 
   res.status(204).json({});
 });
+
+exports.AddPartToBuild = catchAsync(async (req, res, next) => {
+  const { buildId, partId } = req.query;
+
+  const newBuildPart = await BuildPart.findOne({
+    where: { partId: partId, buildId: buildId },
+  });
+
+  if (!newBuildPart) {
+    const newItem = await BuildPart.create({
+      quantity: 1,
+      buildId: buildId,
+      partId: partId,
+    });
+    res.status(200).json({
+      status: 'success',
+      item: newItem,
+    });
+  } else {
+    res.status(500).json({
+      status: 'error',
+      message: 'Part already exists in the build',
+    });
+  }
+});

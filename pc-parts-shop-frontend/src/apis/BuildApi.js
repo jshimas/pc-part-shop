@@ -12,4 +12,8 @@ export default class BuildApi extends Api {
   deleteBuild = (buildId) => {
     return super.init().delete(`builds/remove?buildId=${buildId}`);
   };
+
+  addPartToBuild = (buildId, partId) => {
+    return super.init().post(`builds/add?buildId=${buildId}&partId=${partId}`);
+  };
 }

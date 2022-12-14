@@ -17,20 +17,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
 import CartApi from "../../apis/CartApi";
+import BuildApi from "../../apis/BuildApi";
 import { addItem } from "../../app/slices/cartSlice";
 import { useEffect, useState } from "react";
 
-export default function PartsTable({ rows }) {
+export default function PartsTable({ rows, id }) {
   const role = useSelector(selectRole);
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
-  const [id, setId] = useState(null);
-
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const handleClick = () => {
-    navigate(`/builds/new`);
+  const handleClick = async (build, part) => {
+    try {
+      const BiuldApi = new BuildApi();
+      const response = await  BiuldApi.addPartToBuild(build, part);
+      navigate(`/builds/${build}`);
+    } catch (err) {
+      setError(err.response.data.message);
+      console.log(err);
+    }
   };
 
   const addToCart = async (partId) => {
@@ -76,9 +83,9 @@ export default function PartsTable({ rows }) {
               {role !== roles.GUEST && (
                 <TableCell align="right">
                   <Box sx={{ display: "inline-flex", gap: 2 }}>
-                  {id !== null && (
+                  {(id !== null && id !== undefined) && (
                     <Button
-                      onClick={handleClick}
+                      onClick={() => handleClick(id, row.id)}
                       variant="contained"
                       startIcon={<AddIcon />}
                     >

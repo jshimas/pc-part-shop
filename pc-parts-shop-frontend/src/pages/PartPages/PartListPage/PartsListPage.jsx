@@ -12,14 +12,13 @@ import { roles } from "../../../roles";
 import PartsApi from "../../../apis/PartsApi";
 
 export default function PartListPage() {
-  const { type } = useParams();
+  const { type, BuildId} = useParams();
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const role = useSelector(selectRole);
 
   useEffect(() => {
@@ -32,6 +31,7 @@ export default function PartListPage() {
       } catch (err) {
         setError(err.response.data.message);
         setData(null);
+        
       }
       setLoading(false);
     };
@@ -73,7 +73,7 @@ export default function PartListPage() {
           </Button>
         )}
       </Box>
-      {loading ? <CircularProgress /> : <PartsTable rows={data} />}
+      {loading ? <CircularProgress /> : <PartsTable rows={data} id={BuildId}/>}
     </div>
   );
 }
