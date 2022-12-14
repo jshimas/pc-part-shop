@@ -19,7 +19,7 @@ import { roles } from "../../roles";
 // import CartApi from "../../../apis/CartApi";
 // import { addItem } from "../../../App/slices/cartSlice";
 
-export default function BuildTable({ rows, missing }) {
+export default function BuildTable({ rows, missing, buildId }) {
   const role = useSelector(selectRole);
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
@@ -148,7 +148,7 @@ export default function BuildTable({ rows, missing }) {
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right">
-                <Button href={"/parts/" + row /* TODO make sure to add buildID later to addPartToBuild()*/ }> 
+                <Button href={"/parts/" + row + "/" + buildId}>
                   ADD Component
                 </Button>
               </TableCell>

@@ -83,7 +83,7 @@ export default function BuildPage() {
         </center>
       </div>
       <center>
-        {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts}/>}
+        {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts} buildId={id}/>}
       </center>
       <center>
         <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick}>

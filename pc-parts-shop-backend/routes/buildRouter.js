@@ -7,5 +7,6 @@ router.get('/getAllBuilds', buildController.getAllBuilds);
 router.get('/getBuild', buildController.getBuild);
 router.post('/create', buildController.createBuild);
 router.delete('/remove', buildController.removeBuild);
+router.post('/add', buildController.AddPartToBuild);
 
 module.exports = router;
