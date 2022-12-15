@@ -11,7 +11,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ import PartsApi from "../../apis/PartsApi";
 
 export default function PartsTable({ rows, id }) {
   const role = useSelector(selectRole);
+  const { type } = useParams();
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
@@ -104,13 +105,16 @@ export default function PartsTable({ rows, id }) {
                         Add to build
                       </Button>
                     )}
-                    <Button
-                      onClick={() => removePart(row.id)}
-                      variant="outlined"
-                      startIcon={<DeleteIcon />}
-                    >
-                      Delete
-                    </Button>
+                    {role === roles.ADMIN && (
+                      <Button
+                        onClick={() => removePart(row.id) && navigate(`/`)}
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                      >
+                        Delete
+                      </Button>
+                    )}
+
                     <Button
                       onClick={() => addToCart(row.id)}
                       variant="outlined"

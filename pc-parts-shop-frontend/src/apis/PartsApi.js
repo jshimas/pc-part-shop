@@ -13,8 +13,15 @@ export default class PartsApi extends Api {
     return super.init().delete(`/parts?partId=${id}`);
   };
 
-  addPart = async () => {
-    return super.init().post(`/parts`);
+  addPart = async (
+    name //, partType, manufacturer, releaseDate, price
+  ) => {
+    const partData = {
+      name,
+    };
+    console.log(name);
+    console.log(partData);
+    return super.init().post(`/parts/create-part`, partData);
   };
 
   editPart = async () => {

@@ -7,19 +7,34 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
 import AddIcon from "@mui/icons-material/Add";
 import PartsApi from "../../../apis/PartsApi";
 import { useEffect, useState } from "react";
 
 export default function PartAddPage() {
   const [error, setError] = useState(null);
-
+  const [partName, setPartName] = useState(null);
   const { type } = useParams();
 
-  const testSQL = `INSERT INTO parts (name, type, manufacturer, releaseDate,price,details,createdAt,updatedAt)
-  VALUES ('test','test','test','test',1,'test','test','test');
-  `;
+  var manufacturerName, releaseDate, price;
+
   const partsApi1 = new PartsApi();
+
+  const handleAdding = async () => {
+    const partsApi = new PartsApi();
+    try {
+      //if (partName === null || partName === "") {
+      //  setPartName(undefined);
+      //}
+      console.log(partName);
+
+      const response = await partsApi.addPart(partName);
+    } catch (err) {
+      setError(err.response.data.message);
+      console.log(err);
+    }
+  };
   //      const response1 =  partsApi1.addPart();
 
   // addPartTest(() => {
@@ -41,7 +56,7 @@ export default function PartAddPage() {
       <Button
         variant="outlined"
         startIcon={<AddIcon />}
-        onClick={() => partsApi1.addPart()}
+        onClick={() => handleAdding()}
       >
         Add {type.split("-").join(" ")}
       </Button>
@@ -58,7 +73,18 @@ export default function PartAddPage() {
           sx={{ mt: 3 }}
           hiddenLabel
           id="filled-hidden-label-normal"
-          label="enter part name"
+          label="Part name"
+          variant="filled"
+          onChange={(event) => {
+            setPartName(event.target.value);
+          }}
+        />
+
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="Manufacturer name"
           variant="filled"
           onChange={(event) => {}}
         />
@@ -66,7 +92,7 @@ export default function PartAddPage() {
           sx={{ mt: 3 }}
           hiddenLabel
           id="filled-hidden-label-normal"
-          label="enter build name"
+          label="Release date"
           variant="filled"
           onChange={(event) => {}}
         />
@@ -74,32 +100,11 @@ export default function PartAddPage() {
           sx={{ mt: 3 }}
           hiddenLabel
           id="filled-hidden-label-normal"
-          label="enter build name"
+          label="Price"
           variant="filled"
-          onChange={(event) => {}}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="enter build name"
-          variant="filled"
-          onChange={(event) => {}}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="enter build name"
-          variant="filled"
-          onChange={(event) => {}}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="enter build name"
-          variant="filled"
+          InputProps={{
+            startAdornment: <InputAdornment position="start">€</InputAdornment>,
+          }}
           onChange={(event) => {}}
         />
       </div>

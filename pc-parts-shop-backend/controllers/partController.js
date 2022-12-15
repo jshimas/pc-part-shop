@@ -21,8 +21,11 @@ exports.getParts = catchAsync(async (req, res, next) => {
 });
 
 exports.createPart = catchAsync(async (req, res) => {
+  const { partName } = req.body;
+  console.log(partName);
+
   const newPart = await Part.create({
-    name: 'createTest',
+    name: partName,
     type: 'cpu',
     manufacturer: 'createTest',
     releaseDate: 'createTest',
