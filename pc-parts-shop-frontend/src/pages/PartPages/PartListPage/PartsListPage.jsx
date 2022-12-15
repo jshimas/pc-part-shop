@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Button, CircularProgress } from "@mui/material";
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import PartsTable from "../../../components/PartsTable/PartsTable";
 import { useEffect, useState } from "react";
@@ -27,6 +27,7 @@ export default function PartListPage() {
         const partsApi = new PartsApi();
         const response = await partsApi.getPartsByType(type);
         setData(response.data.parts);
+
         setError(null);
       } catch (err) {
         setError(err.response.data.message);
@@ -63,7 +64,7 @@ export default function PartListPage() {
             Add {type.split("-").join(" ")}
           </Button>
         )}
-                {role === roles.ADMIN && (
+        {role === roles.ADMIN && (
           <Button
             variant="outlined"
             startIcon={<FilterAltOutlinedIcon />}

@@ -19,21 +19,15 @@ export default function PartRemovePage() {
       <h3>
         {type} Do you wish to remove the part: ID: {id}
         {role === roles.ADMIN && (
-          <Button
-            variant="outlined"
-            onClick={() => navigate(`${pathname}/edit`)}
-          >
+          <Button variant="outlined" onClick={() => navigate()}>
             Yes
           </Button>
         )}
-        {role === roles.ADMIN && (
-          <Button
-            variant="outlined"
-            onClick={() => navigate(`${pathname}/edit`)}
-          >
-            No
-          </Button>
-        )}
+        role === roles.ADMIN && (
+        <Button variant="outlined" onClick={() => navigate(`${pathname}/edit`)}>
+          No
+        </Button>
+        )
       </h3>
     </div>
   );
