@@ -16,4 +16,8 @@ export default class BuildApi extends Api {
   addPartToBuild = (buildId, partId) => {
     return super.init().post(`builds/add?buildId=${buildId}&partId=${partId}`);
   };
+
+  checkCompatibility = (buildId) => {
+    return super.init().get(`builds/check?buildId=${buildId}`);
+  };
 }
