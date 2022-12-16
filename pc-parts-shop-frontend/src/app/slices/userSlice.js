@@ -13,6 +13,7 @@ const initialState = {
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   const authApi = new AuthenticationApi();
   const response = await authApi.getCurrentUser();
+  console.log(response.data);
   return response.data.currentUser;
 });
 

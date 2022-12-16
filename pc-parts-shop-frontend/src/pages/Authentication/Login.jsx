@@ -33,6 +33,7 @@ export default function Login() {
     const authApi = new AuthenticationApi();
     try {
       const res = await authApi.login(loginParams);
+      console.log("login response: ", res.data);
       dispatch(userLogin(res.data.user));
       dispatch(resetCartStatus());
       setAlert(`Welcome, ${res.data.user?.fullName.split(" ")[0]}!`, "info");
