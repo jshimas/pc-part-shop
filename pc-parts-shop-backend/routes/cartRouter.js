@@ -10,4 +10,6 @@ router
   .patch(cartController.changeCartItemQuantity)
   .delete(cartController.deleteCartItem);
 
+router.route('/buy-build-parts').post(cartController.addBuildPartsToCart);
+
 module.exports = router;

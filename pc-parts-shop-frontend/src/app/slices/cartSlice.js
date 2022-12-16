@@ -39,11 +39,16 @@ export const cartSlice = createSlice({
         existingItem.quantity++;
       }
     },
+    replaceCart(state, action) {
+      return {
+        ...state,
+        items: action.payload,
+      };
+    },
     deleteItem(state, action) {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
     deleteAllItems(state, action) {
-      console.log("deleteItems");
       return {
         ...state,
         items: [],
@@ -84,6 +89,7 @@ export const {
   increaseQuantity,
   decreaseQuantity,
   addItem,
+  replaceCart,
   deleteItem,
   resetCartStatus,
   setCheckoutStatus,

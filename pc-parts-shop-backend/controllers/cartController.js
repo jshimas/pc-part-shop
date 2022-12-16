@@ -1,4 +1,4 @@
-const { ShoppingCart, OrderItem, Part } = require('../models');
+const { ShoppingCart, OrderItem, Part, BuildPart } = require('../models');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -27,7 +27,10 @@ exports.addCartItem = catchAsync(async (req, res) => {
   const { cartId, partId } = req.query;
 
   let newItem;
-  const existingItem = await OrderItem.findOne({ where: { partId } });
+  const existingItem = await OrderItem.findOne({
+    where: { partId },
+    cartId: cartId,
+  });
   if (!existingItem) {
     newItem = await OrderItem.create({ cartId, partId });
   } else {
@@ -71,4 +74,38 @@ exports.deleteCartItem = catchAsync(async (req, res, next) => {
   await cartItem.destroy({ force: true });
 
   res.status(204).json({});
+});
+
+exports.addBuildPartsToCart = catchAsync(async (req, res, next) => {
+  const { cartId, buildId } = req.query;
+
+  const buildParts = await BuildPart.findAll({
+    where: { buildId: buildId },
+  });
+
+  await Promise.all(
+    buildParts.map(async (bp) => {
+      const existingItem = await OrderItem.findOne({
+        where: { partId: bp.partId, cartId: cartId },
+      });
+      if (!existingItem) {
+        await OrderItem.create({
+          cartId,
+          partId: bp.partId,
+          quantity: bp.quantity,
+        });
+      } else {
+        await existingItem.increment('quantity', { by: bp.quantity });
+      }
+    })
+  );
+
+  const newCartItems = await OrderItem.findAll({
+    where: { cartId: cartId },
+    include: Part,
+  });
+
+  res.status(200).json({
+    newCartItems,
+  });
 });

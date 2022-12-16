@@ -107,8 +107,8 @@ exports.removeBuild = catchAsync(async (req, res, next) => {
 
   //remove parts from the build
   const bParts = await BuildPart.findAll({ where: { buildId: buildId } });
-  if(bParts.length !== 0){
-  for (const bpart of bParts) {
+  if (bParts.length !== 0) {
+    for (const bpart of bParts) {
       await bpart.destroy({ force: true });
     }
   }
