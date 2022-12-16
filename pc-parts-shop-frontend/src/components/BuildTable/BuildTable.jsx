@@ -16,6 +16,9 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
 import { selectRole } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
+import CartApi from "../../apis/CartApi";
+import { replaceCart, resetCartStatus } from "../../app/slices/cartSlice";
+import useAlert from "../../hooks/useAlert";
 // import CartApi from "../../../apis/CartApi";
 // import { addItem } from "../../../App/slices/cartSlice";
 
@@ -23,6 +26,7 @@ export default function BuildTable({ rows, missing, buildId }) {
   const role = useSelector(selectRole);
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
+  const { setAlert } = useAlert();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -31,15 +35,17 @@ export default function BuildTable({ rows, missing, buildId }) {
     navigate(`/builds/new`);
   };
 
-//   const addToCart = async (partId) => {
-//     try {
-//       const cartApi = new CartApi();
-//       const response = await cartApi.addItem(cartId, partId);
-//       dispatch(addItem(response.data.item));
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
+  const addBuildPartsToCart = async () => {
+    console.log("ahoy");
+    try {
+      const cartApi = new CartApi();
+      const response = await cartApi.addBuildPartsToCart(cartId, buildId);
+      dispatch(replaceCart(response.data.newCartItems));
+      setAlert("Build items have been added to your shopping cart.", "info");
+    } catch (err) {
+      setAlert(err.response?.data.message, "error");
+    }
+  };
 
   const table = (
     <TableContainer sx={{ width: 1000, margin: "0 auto" }}>
@@ -51,15 +57,8 @@ export default function BuildTable({ rows, missing, buildId }) {
             <TableCell align="right" sx={{ width: "10%" }}>
               Manufacturer
             </TableCell>
-            <TableCell align="right">
-                Release date
-            </TableCell>
-            <TableCell align="right">
-                Price
-            </TableCell>
-            <TableCell key={""} align="right">
-              {""}
-            </TableCell>
+            <TableCell align="right">Release date</TableCell>
+            <TableCell align="right">Price</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -113,38 +112,42 @@ export default function BuildTable({ rows, missing, buildId }) {
           ))} */}
         </TableBody>
       </Table>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
+        <Button
+          onClick={() => addBuildPartsToCart()}
+          variant="contained"
+          startIcon={<ShoppingCartIcon />}
+        >
+          Buy parts
+        </Button>
+      </Box>
       <center>
-          <Typography
-          variant="h4"
-          sx={{ pt: 5, my: 4 }}
-          >
-            Available part types
-          </Typography>
-        </center>
+        <Typography variant="h4" sx={{ pt: 5, my: 4 }}>
+          Available part types
+        </Typography>
+      </center>
       <Table sx={{ mt: 10 }}>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ width: "35%" }}>
-              Part name
-            </TableCell>
+            <TableCell sx={{ width: "35%" }}>Part name</TableCell>
             <TableCell align="right" sx={{ width: "10%" }}>
-            {""}
+              {""}
             </TableCell>
-            <TableCell align="right">
-            {""}
-            </TableCell>
+            <TableCell align="right">{""}</TableCell>
             <TableCell align="right" sx={{ pr: 4 }}>
-            function 
+              function
             </TableCell>
             <TableCell key={""} align="right">
-            {""}
+              {""}
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-        {missing.map((row) => (
+          {missing.map((row) => (
             <TableRow>
-              <TableCell component="th" scope="row">{row}</TableCell>
+              <TableCell component="th" scope="row">
+                {row}
+              </TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right">

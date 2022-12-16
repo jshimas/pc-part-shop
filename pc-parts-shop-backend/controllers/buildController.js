@@ -13,7 +13,7 @@ exports.getAllBuilds = catchAsync(async (req, res, next) => {
   });
 });
 
-function filtering(parts, removables){
+function filtering(parts, removables) {
   let idxs = [];
   for (let removable of removables) {
     for (let i = 0; i < parts.length; i++) {
@@ -107,8 +107,8 @@ exports.removeBuild = catchAsync(async (req, res, next) => {
 
   //remove parts from the build
   const bParts = await BuildPart.findAll({ where: { buildId: buildId } });
-  if(bParts.length !== 0){
-  for (const bpart of bParts) {
+  if (bParts.length !== 0) {
+    for (const bpart of bParts) {
       await bpart.destroy({ force: true });
     }
   }

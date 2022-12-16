@@ -21,6 +21,12 @@ export default class CartApi extends Api {
     return super.init().post(`cart?cartId=${cartId}&partId=${partId}`);
   };
 
+  addBuildPartsToCart = async (cartId, buildId) => {
+    return super
+      .init()
+      .post(`cart/buy-build-parts?cartId=${cartId}&buildId=${buildId}`);
+  };
+
   checkout = (user, cartId, items) => {
     const cartData = {
       user,

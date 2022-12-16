@@ -85,9 +85,15 @@ exports.getUserData = catchAsync(async (req, res, next) => {
   let currentUser;
   if (token) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    currentUser = await User.findByPk(decoded.id, {
-      include: UserRoleEnum,
+    const user = await User.findByPk(decoded.id, {
+      include: {
+        model: UserRoleEnum,
+        attributes: ['role'],
+      },
+      attributes: ['id', 'firstName', 'lastName', 'fullName', 'email'],
     });
+    currentUser = user.toJSON();
+    currentUser.role = currentUser.UserRoleEnum.role;
   } else {
     currentUser = {
       role: 'guest',
