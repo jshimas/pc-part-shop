@@ -9,6 +9,9 @@ import BuildTable from "../../../components/BuildTable/BuildTable";
 import BuildApi from "../../../apis/BuildApi";
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import { selectRole } from "../../../app/slices/userSlice";
+import { roles } from "../../../roles";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function BuildPage() {
   const { id } = useParams();
@@ -19,6 +22,7 @@ export default function BuildPage() {
   const [name, setName] = useState(null);
   const [parts, setParts] = useState(null);
   const navigate = useNavigate();
+  const role = useSelector(selectRole);
 
   useEffect(() => {
     const getData = async () => {
@@ -38,7 +42,7 @@ export default function BuildPage() {
     getData();
   }, [id]);
 
-  const handleClick = async () => {
+  const handleClick1 = async () => {
     try {
       const BiuldApi = new BuildApi();
       const response = await  BiuldApi.deleteBuild(id);
@@ -48,27 +52,23 @@ export default function BuildPage() {
       console.log(err);
     }
   };
-  // function missingParts(allParts, currentParts)
-  // {
-  //   let rez = []
-  //   for(const examine of allParts)
-  //   {
-  //     let cond = false;
-  //     for(const current of currentParts) // check if part was picked
-  //     {
-  //       if(examine === current)
-  //       {
-  //         cond = true;
-  //         break;
-  //       }
-  //     }
-  //     if(cond === false) // part wasn't picked so was added to the list
-  //     {
-  //       rez.push(examine);
-  //     }
-  //   }
-  //   return rez;
-  // }
+
+  const handleClick2 = async () => {
+    try {
+       const BiuldApi = new BuildApi();
+       const response = await  BiuldApi.checkCompatibility(id);
+       if(response.data.problems === '')
+       {
+        setError("Everything is compatible");
+       } else{
+       setError(response.data.problems);
+       }
+    } catch (err) {
+      setError(err.response.data.message);
+      console.log(err);
+    }
+  };
+
 
   return (
     <div>
@@ -82,14 +82,25 @@ export default function BuildPage() {
           </Typography>
         </center>
       </div>
+      {role !== roles.GUEST &&(
+      <center>
+        <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick2}>
+          Check compatibility
+        </Button>
+
+        <Typography sx={{ my: 3, color:'red'}}>
+        {error}
+        </Typography>
+      </center>)}
       <center>
         {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts} buildId={id}/>}
       </center>
+      {role !== roles.GUEST &&(
       <center>
-        <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick}>
+        <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick1}>
           Delete Build
         </Button>
-      </center>
+      </center>)}
     </div>
   );
 }

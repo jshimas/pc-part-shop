@@ -8,5 +8,6 @@ router.get('/getBuild', buildController.getBuild);
 router.post('/create', buildController.createBuild);
 router.delete('/remove', buildController.removeBuild);
 router.post('/add', buildController.AddPartToBuild);
+router.get('/check', buildController.checkCompatibility);
 
 module.exports = router;

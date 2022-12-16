@@ -113,6 +113,7 @@ export default function BuildTable({ rows, missing, buildId }) {
           ))} */}
         </TableBody>
       </Table>
+      {role !== roles.GUEST &&(
       <center>
           <Typography
           variant="h4"
@@ -120,7 +121,8 @@ export default function BuildTable({ rows, missing, buildId }) {
           >
             Available part types
           </Typography>
-        </center>
+      </center>)}
+      {role !== roles.GUEST &&(
       <Table sx={{ mt: 10 }}>
         <TableHead>
           <TableRow>
@@ -155,13 +157,13 @@ export default function BuildTable({ rows, missing, buildId }) {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table>)}
     </TableContainer>
   );
 
   return (
     <>
-      {rows.length === 0 ? (
+    {rows.length === 0 ? (
         <Typography sx={{ textAlign: "center" }}>Wow, such empty!</Typography>
       ) : (
         table
