@@ -92,9 +92,11 @@ export default function BuildPage() {
         {error}
         </Typography>
       </center>)}
+      {data !== null &&(
       <center>
         {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts} buildId={id}/>}
       </center>
+      )}
       {role !== roles.GUEST &&(
       <center>
         <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick1}>

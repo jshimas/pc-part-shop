@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      quantity: {
+      compatible: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

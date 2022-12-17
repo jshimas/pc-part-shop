@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      cpuSocketStandard: {
+      cpuSocketStandart: {
         type: DataTypes.STRING,
         allowNull: false,
       },

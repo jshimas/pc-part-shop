@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      socketStandard: {
+      socketStandart: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       threadQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      partId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },

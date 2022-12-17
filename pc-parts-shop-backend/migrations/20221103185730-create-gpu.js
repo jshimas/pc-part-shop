@@ -20,7 +20,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      pcieStandart: {
+      pcieStandartEnum: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

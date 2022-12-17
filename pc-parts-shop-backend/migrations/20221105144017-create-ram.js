@@ -16,7 +16,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      typeEnum: {
+      ramTypeEnum: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      partId: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

@@ -42,12 +42,12 @@ const parts = [
     link: "parts/memory",
   },
   {
-    name: "Storage",
-    link: "parts/storage",
+    name: "Rams",
+    link: "parts/ram",
   },
   {
-    name: "Video cards",
-    link: "parts/video-card",
+    name: "Gpus",
+    link: "parts/gpu",
   },
 ];
 

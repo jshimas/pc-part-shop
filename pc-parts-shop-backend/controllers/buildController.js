@@ -1,4 +1,15 @@
-const { Build, BuildPart, Part, CompatiblePart } = require('../models');
+const {
+  Build,
+  BuildPart,
+  Part,
+  CompatiblePart,
+  CPU,
+  Motherboard,
+  RAM,
+  GPU,
+  ExternalMemory,
+  PcieStandartEnum,
+} = require('../models');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
@@ -12,22 +23,6 @@ exports.getAllBuilds = catchAsync(async (req, res, next) => {
     build,
   });
 });
-
-function filtering(parts, removables) {
-  let idxs = [];
-  for (let removable of removables) {
-    for (let i = 0; i < parts.length; i++) {
-      if (removable === parts[i]) {
-        idxs.push(i);
-        break;
-      }
-    }
-  }
-  for (const idx of idxs) {
-    parts.splice(idx, 1);
-  }
-  return parts;
-}
 
 exports.getBuild = catchAsync(async (req, res, next) => {
   const allParts = [
@@ -63,8 +58,8 @@ exports.getBuild = catchAsync(async (req, res, next) => {
   for (const name of parts) {
     hold.push(name.type);
   }
-  const left = filtering(allParts, hold); // get part types who are still missing until the full build
 
+  const left = allParts.filter((item) => !hold.includes(item));
   // const parts = await Part.findAll({ where: { id: bParts.partId } });
   res.status(200).json({
     status: 'success',
@@ -178,11 +173,17 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
     const cond = await CompatiblePart.findOne({
       where: { part1Id: motherboard.id, part2Id: cpu.id },
     });
+    let checker = 1;
+    if (!cond) {
+      checker = 0;
+    }
+    const temp1 = await CPU.findOne({ where: { partId: cpu.id } });
+    const temp2 = await Motherboard.findOne({
+      where: { partId: motherboard.id },
+    });
+
     // both sockets match
-    if (
-      cond.compatible === 1 ||
-      cpu.socketStandard === motherboard.cpuSocketStandard
-    ) {
+    if (checker === 1 || temp1.socketStandart === temp2.cpuSocketStandart) {
       // make a compatible parts object
       if (!cond) {
         const newItem = await CompatiblePart.create({
@@ -193,7 +194,7 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
       }
     } else {
       // sockets don't match
-      problems.push("Cpu and motherboard aren't compatible");
+      problems.push("Cpu and motherboard aren't compatible.\n");
     }
   }
 
@@ -203,8 +204,16 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
     const cond = await CompatiblePart.findOne({
       where: { part1Id: motherboard.id, part2Id: ram.id },
     });
+    let checker = 1;
+    if (!cond) {
+      checker = 0;
+    }
+    const temp1 = await RAM.findOne({ where: { partId: ram.id } });
+    const temp2 = await Motherboard.findOne({
+      where: { partId: motherboard.id },
+    });
     // both ram types match
-    if (cond.compatible === 1 || ram.typeEnum === motherboard.ramTypeEnum) {
+    if (checker === 1 || temp1.ramTypeEnum === temp2.ramTypeEnum) {
       // make a compatible parts object
       if (!cond) {
         const newItem = await CompatiblePart.create({
@@ -215,7 +224,7 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
       }
     } else {
       // sockets don't match
-      problems.push("Ram and motherboard aren't compatible");
+      problems.push("Ram and motherboard aren't compatible.\n");
     }
   }
 
@@ -225,11 +234,20 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
     const cond = await CompatiblePart.findOne({
       where: { part1Id: motherboard.id, part2Id: gpu.id },
     });
+    let checker = 1;
+    if (!cond) {
+      checker = 0;
+    }
+    const temp1 = await GPU.findOne({ where: { partId: gpu.id } });
+    const temp1Enum = await PcieStandartEnum.findOne({
+      where: { pcieStandart: temp1.pcieStandartEnum },
+    });
+    const temp2 = await Motherboard.findOne({
+      where: { partId: motherboard.id },
+    });
+
     // both gpu types match
-    if (
-      cond.compatible === 1 ||
-      gpu.pcieStandartEnum === motherboard.pcieStandartEnum
-    ) {
+    if (checker === 1 || temp1Enum.id === temp2.pcieStandartEnum) {
       // make a compatible parts object
       if (!cond) {
         const newItem = await CompatiblePart.create({
@@ -240,7 +258,7 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
       }
     } else {
       // sockets don't match
-      problems.push("Gpu and motherboard aren't compatible");
+      problems.push("Gpu and motherboard aren't compatible.\n");
     }
   }
 
@@ -250,18 +268,29 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
     const cond = await CompatiblePart.findOne({
       where: { part1Id: motherboard.id, part2Id: memory.id },
     });
+    let checker = 1;
+    if (!cond) {
+      checker = 0;
+    }
+    const temp1 = await ExternalMemory.findOne({
+      where: { partId: memory.id },
+    });
+    const temp2 = await Motherboard.findOne({
+      where: { partId: motherboard.id },
+    });
     // find memory type and if a socket exists
     let deeperCheck = false;
-    if (memory.connectorType === 'M.2') {
-      if (memory.m2ssdSocketQuantity > 0) deeperCheck = true;
-    } else if (memory.connectorType === 'SATA') {
-      if (memory.sataSocketQuantity > 0) deeperCheck = true;
-    } else if (memory.connectorType === 'PCIe') {
+    if (temp1.connectorType.includes('M.2')) {
+      if (temp2.m2ssdSocketQuantity > 0) deeperCheck = true;
+    } else if (temp1.connectorType.includes('SATA')) {
+      if (temp2.sataSocketQuantity > 0) deeperCheck = true;
+    } else if (temp1.connectorType.includes('PCie')) {
       // socket is shared with gpu, so you need at least 2
       // one for gpu and one for this type of memory
-      if (memory.pcieSocketQuantity > 1) deeperCheck = true;
+      if (temp2.pcieSocketQuantity > 1) deeperCheck = true;
     }
-    if (cond.compatible === 1 || deeperCheck) {
+
+    if (checker === 1 || deeperCheck) {
       // make a compatible parts object
       if (!cond) {
         const newItem = await CompatiblePart.create({
@@ -272,7 +301,7 @@ exports.checkCompatibility = catchAsync(async (req, res, next) => {
       }
     } else {
       // sockets don't match
-      problems.push("Memory and motherboard aren't compatible");
+      problems.push("Memory and motherboard aren't compatible.\n");
     }
   }
 

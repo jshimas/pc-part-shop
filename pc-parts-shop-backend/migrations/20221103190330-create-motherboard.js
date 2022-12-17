@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      ramType: {
+      ramTypeEnum: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      pcieStandart: {
+      pcieStandartEnum: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

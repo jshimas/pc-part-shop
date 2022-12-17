@@ -49,6 +49,10 @@ export default function BuildTable({ rows, missing, buildId }) {
 
   const table = (
     <TableContainer sx={{ width: 1000, margin: "0 auto" }}>
+      {rows.length === 0 ? (
+        <Typography sx={{ textAlign: "center" }}>Wow, such empty!</Typography>
+      ) : (
+      <div>
       <Table aria-label="parts table">
         <TableHead>
           <TableRow>
@@ -66,12 +70,12 @@ export default function BuildTable({ rows, missing, buildId }) {
             <TableRow key={row.name}>
               <TableCell>{row.type}</TableCell>
               <TableCell component="th" scope="row">
-                <Button
+                {/* <Button
                   variant="text"
                   onClick={() => navigate(`${pathname}/${row.id}`)}
-                >
+                > */}
                   {row.name}
-                </Button>
+                {/* </Button> */}
               </TableCell>
               <TableCell align="right">{row.manufacturer}</TableCell>
               <TableCell align="right">{row.releaseDate}</TableCell>
@@ -121,6 +125,7 @@ export default function BuildTable({ rows, missing, buildId }) {
           Buy parts
         </Button>
       </Box>
+      </div>)}
       <center>
         <Typography variant="h4" sx={{ pt: 5, my: 4 }}>
           Available part types
@@ -159,17 +164,13 @@ export default function BuildTable({ rows, missing, buildId }) {
           ))}
         </TableBody>
       </Table>
-      )}
+      
     </TableContainer>
   );
 
   return (
     <>
-      {rows.length === 0 ? (
-        <Typography sx={{ textAlign: "center" }}>Wow, such empty!</Typography>
-      ) : (
-        table
-      )}
+      {table}
     </>
   );
 }

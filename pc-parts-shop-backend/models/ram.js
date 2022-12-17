@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class RAM extends Model {
     static associate({ RamTypeEnum }) {
-      this.belongsTo(RamTypeEnum, { foreignKey: 'typeEnum' });
+      this.belongsTo(RamTypeEnum, { foreignKey: 'ramTypeEnum' });
     }
   }
   RAM.init(
@@ -22,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-      typeEnum: {
+      ramTypeEnum: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      partId: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
