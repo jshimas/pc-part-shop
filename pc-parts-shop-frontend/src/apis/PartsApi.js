@@ -14,12 +14,12 @@ export default class PartsApi extends Api {
   };
 
   addPart = async (
-    name //, partType, manufacturer, releaseDate, price
+    partName //, partType, manufacturer, releaseDate, price
   ) => {
     const partData = {
-      name,
+      partName,
     };
-    console.log(name);
+    console.log(partName);
     console.log(partData);
     return super.init().post(`/parts/create-part`, partData);
   };

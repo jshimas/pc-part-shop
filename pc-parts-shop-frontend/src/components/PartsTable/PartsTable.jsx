@@ -22,6 +22,12 @@ import BuildApi from "../../apis/BuildApi";
 import { addItem } from "../../app/slices/cartSlice";
 import { useEffect, useState } from "react";
 import PartsApi from "../../apis/PartsApi";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import DeletePartDialog from "../DeletePartDialog/DeletePartDialog";
 
 export default function PartsTable({ rows, id }) {
   const role = useSelector(selectRole);
@@ -48,16 +54,6 @@ export default function PartsTable({ rows, id }) {
       const cartApi = new CartApi();
       const response = await cartApi.addItem(cartId, partId);
       dispatch(addItem(response.data.item));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const removePart = async (partId) => {
-    try {
-      const partsApi = new PartsApi();
-      const response = await partsApi.deletePart(partId);
-      dispatch(removePart(response.data.item));
     } catch (err) {
       console.log(err);
     }
@@ -106,13 +102,7 @@ export default function PartsTable({ rows, id }) {
                       </Button>
                     )}
                     {role === roles.ADMIN && (
-                      <Button
-                        onClick={() => removePart(row.id) && navigate(`/`)}
-                        variant="outlined"
-                        startIcon={<DeleteIcon />}
-                      >
-                        Delete
-                      </Button>
+                      <DeletePartDialog partId={row.id} />
                     )}
 
                     <Button

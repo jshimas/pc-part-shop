@@ -12,6 +12,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        firstName: 'admin',
+        lastName: 'admin',
+        email: 'admin@admin.admin',
+        roleEnum: '2',
+        password:
+          '$2a$12$uPPS04lsppy3XidSFFdho./RyooptmHIwTCjuu82TEr6uC8cL3DXi',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
