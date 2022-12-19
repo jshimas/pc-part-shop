@@ -5,12 +5,26 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import { useEffect, useState } from "react";
 
 import { tableCellClasses } from "@mui/material/TableCell";
 
 export default function CPUdetails({ secondaryPart }) {
-  const handleRender = () => {};
+  const [ramType, setRamType] = useState(null);
+
+  useEffect(() => {
+    const handleRamType = () => {
+      if (secondaryPart.ramTypeEnum === 1) {
+        setRamType("DDR3");
+      } else if (secondaryPart.ramTypeEnum === 2) {
+        setRamType("DDR4");
+      } else if (secondaryPart.ramTypeEnum === 3) {
+        setRamType("DDR5");
+      }
+    };
+    handleRamType();
+  });
+
   return (
     <TableContainer>
       <Table
@@ -24,12 +38,9 @@ export default function CPUdetails({ secondaryPart }) {
       >
         <TableHead>
           <TableRow>
-            <TableCell>VRAM: {secondaryPart.vramQuantity} GB</TableCell>
-            <TableCell>
-              VRAM frequency: {secondaryPart.vramFrequancy} MHz
-            </TableCell>
-            <TableCell>GPU Core frequency: {secondaryPart.frequancy}</TableCell>
-            <TableCell>PCIe lanes: {secondaryPart.pciestandartenum}</TableCell>
+            <TableCell>Frequancy: {secondaryPart.frequancy} MHz </TableCell>
+            <TableCell>Capacity: {secondaryPart.capacity} GB</TableCell>
+            <TableCell>Ram Type: {ramType}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

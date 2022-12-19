@@ -24,12 +24,9 @@ export default function CPUdetails({ secondaryPart }) {
       >
         <TableHead>
           <TableRow>
-            <TableCell>VRAM: {secondaryPart.vramQuantity} GB</TableCell>
             <TableCell>
-              VRAM frequency: {secondaryPart.vramFrequancy} MHz
+              Power Capacity: {secondaryPart.powerCapacity} W
             </TableCell>
-            <TableCell>GPU Core frequency: {secondaryPart.frequancy}</TableCell>
-            <TableCell>PCIe lanes: {secondaryPart.pciestandartenum}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
