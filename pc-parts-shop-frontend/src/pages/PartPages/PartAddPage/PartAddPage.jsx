@@ -21,6 +21,7 @@ export default function PartAddPage() {
   const [manufacturer, setManufacturer] = useState(null);
   const [releaseDate, setReleaseDate] = useState(null);
   const [price, setPrice] = useState(null);
+  const [details, setDetails] = useState(null);
 
   const partsApi1 = new PartsApi();
 
@@ -37,7 +38,8 @@ export default function PartAddPage() {
         type,
         manufacturer,
         releaseDate,
-        price
+        price,
+        details
       );
     } catch (err) {
       setError(err.response.data.message);
@@ -121,6 +123,16 @@ export default function PartAddPage() {
           }}
           onChange={(event) => {
             setPrice(event.target.value);
+          }}
+        />
+        <TextField
+          sx={{ mt: 3 }}
+          hiddenLabel
+          id="filled-hidden-label-normal"
+          label="Details"
+          variant="filled"
+          onChange={(event) => {
+            setDetails(event.target.value);
           }}
         />
       </div>

@@ -1,10 +1,10 @@
 const {
   Part,
   CPU,
-  Coolers,
+  Cooler,
   GPU,
-  ExternalMemories,
-  Motherboards,
+  ExternalMemory,
+  Motherboard,
   PSU,
   RAM,
 } = require('../models');
@@ -33,11 +33,43 @@ exports.getParts = catchAsync(async (req, res, next) => {
 
 exports.getOnePart = catchAsync(async (req, res, next) => {
   const { type, partId } = req.query;
+  var secondaryPart;
 
   const mainPart = await Part.findOne({ where: { id: partId } });
   if (!mainPart) return next(new AppError('No parts found'));
 
-  const secondaryPart = await CPU.findOne({ where: { partId: partId } });
+  switch (type) {
+    case 'cpu':
+      secondaryPart = await CPU.findOne({ where: { partId: partId } });
+      break;
+    case 'gpu':
+      secondaryPart = await GPU.findOne({ where: { partId: partId } });
+      break;
+    case 'cooler':
+      secondaryPart = await Cooler.findOne({ where: { partId: partId } });
+      break;
+    case 'memory':
+      secondaryPart = await ExternalMemory.findOne({
+        where: { partId: partId },
+      });
+      break;
+    case 'motherboard':
+      secondaryPart = await Motherboard.findOne({ where: { partId: partId } });
+      break;
+    case 'PSU':
+      secondaryPart = await PSU.findOne({ where: { partId: partId } });
+      break;
+    case 'ram':
+      secondaryPart = await RAM.findOne({ where: { partId: partId } });
+      break;
+    default:
+      res.status(500).json({
+        status: 'error',
+        message: 'wrong part type entered',
+      });
+      return;
+  }
+
   //console.log(mainPart);
 
   res.status(200).json({
@@ -48,7 +80,8 @@ exports.getOnePart = catchAsync(async (req, res, next) => {
 });
 
 exports.createPart = catchAsync(async (req, res) => {
-  const { partName, type, manufacturer, releaseDate, price } = req.body;
+  const { partName, type, manufacturer, releaseDate, price, details } =
+    req.body;
   console.log(partName);
 
   const newPart = await Part.create({
@@ -57,7 +90,7 @@ exports.createPart = catchAsync(async (req, res) => {
     manufacturer: manufacturer,
     releaseDate: releaseDate,
     price: price,
-    details: 'createTest',
+    details: details,
     createdAt: new Date(),
     updatedAt: new Date(),
   });
