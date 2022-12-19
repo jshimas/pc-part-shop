@@ -143,6 +143,17 @@ exports.AddPartToBuild = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.removeBuildPart = catchAsync(async (req, res, next) => {
+  const { buildId, partId } = req.query;
+  const partToDestroy = await BuildPart.findOne({ where: { buildId: buildId, partId: partId } });
+
+  if (!partToDestroy) return next(new AppError('No part to destroy'));
+
+  await partToDestroy.destroy({ force: true });
+
+  res.status(204).json({});
+});
+
 exports.checkCompatibility = catchAsync(async (req, res, next) => {
   const { buildId } = req.query;
   const build = await Build.findOne({ where: { id: buildId } });
