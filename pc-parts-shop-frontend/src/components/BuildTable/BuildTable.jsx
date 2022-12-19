@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
-import { selectRole } from "../../app/slices/userSlice";
+import { selectRole, selectId } from "../../app/slices/userSlice";
 import { roles } from "../../roles";
 import CartApi from "../../apis/CartApi";
 import { replaceCart, resetCartStatus } from "../../app/slices/cartSlice";
@@ -22,12 +22,12 @@ import useAlert from "../../hooks/useAlert";
 // import CartApi from "../../../apis/CartApi";
 // import { addItem } from "../../../App/slices/cartSlice";
 
-export default function BuildTable({ rows, missing, buildId }) {
+export default function BuildTable({ rows, missing, buildId, buildMaker}) {
   const role = useSelector(selectRole);
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
   const { setAlert } = useAlert();
-
+  const usrID = useSelector(selectId);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -126,6 +126,8 @@ export default function BuildTable({ rows, missing, buildId }) {
         </Button>
       </Box>
       </div>)}
+      {buildMaker === usrID &&(
+      <div>
       <center>
         <Typography variant="h4" sx={{ pt: 5, my: 4 }}>
           Available part types
@@ -164,7 +166,7 @@ export default function BuildTable({ rows, missing, buildId }) {
           ))}
         </TableBody>
       </Table>
-      
+      </div>)}
     </TableContainer>
   );
 

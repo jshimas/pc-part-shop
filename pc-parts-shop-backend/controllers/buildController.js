@@ -65,6 +65,7 @@ exports.getBuild = catchAsync(async (req, res, next) => {
     status: 'success',
     buildId: build.id,
     buildName: build.name,
+    buildCreator: build.userId,
     left, // parts who still can be added
     parts, // parts who are in the build
   });

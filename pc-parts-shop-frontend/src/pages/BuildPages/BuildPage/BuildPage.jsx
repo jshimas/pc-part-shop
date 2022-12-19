@@ -9,7 +9,7 @@ import BuildTable from "../../../components/BuildTable/BuildTable";
 import BuildApi from "../../../apis/BuildApi";
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-import { selectRole } from "../../../app/slices/userSlice";
+import { selectRole, selectId } from "../../../app/slices/userSlice";
 import { roles } from "../../../roles";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -21,8 +21,10 @@ export default function BuildPage() {
   const [data, setData] = useState(null);
   const [name, setName] = useState(null);
   const [parts, setParts] = useState(null);
+  const [buildMaker, setbuildMaker] = useState(null);
   const navigate = useNavigate();
   const role = useSelector(selectRole);
+  const usrID = useSelector(selectId);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,6 +34,7 @@ export default function BuildPage() {
         setName(response.data.buildName);
         setData(response.data.parts);
         setParts(response.data.left);
+        setbuildMaker(response.data.buildCreator);
         setError(null);
       } catch (err) {
         setError(err.response.data.message);
@@ -94,10 +97,10 @@ export default function BuildPage() {
       </center>)}
       {data !== null &&(
       <center>
-        {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts} buildId={id}/>}
+        {loading ? <CircularProgress /> : <BuildTable rows={data} missing={parts} buildId={id} buildMaker={buildMaker}/>}
       </center>
       )}
-      {role !== roles.GUEST &&(
+      {role !== roles.GUEST && buildMaker === usrID &&(
       <center>
         <Button sx={{ my: 3 }} variant="contained"  onClick={handleClick1}>
           Delete Build
