@@ -3,9 +3,8 @@ import * as React from "react";
 import BuildListGridItem from "./BuildListGridItem";
 import { useNavigate } from "react-router-dom";
 
-export default function BuildListGrid() {
+export default function BuildListGrid({ builds }) {
   const navigate = useNavigate();
-  const data = ["Build 1", "Build 2", "Build 3", "Build 4", "Build 5"];
 
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -16,7 +15,7 @@ export default function BuildListGrid() {
           gap: 3,
         }}
       >
-        {data.map((el, index) => (
+        {builds.map((el, index) => (
           <BuildListGridItem
             data={el}
             key={index}

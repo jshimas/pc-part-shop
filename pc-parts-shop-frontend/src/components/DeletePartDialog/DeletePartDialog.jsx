@@ -7,8 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PartsApi from "../../apis/PartsApi";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export default function AlertDialog({ partId, reRender }) {
   const [open, setOpen] = React.useState(false);

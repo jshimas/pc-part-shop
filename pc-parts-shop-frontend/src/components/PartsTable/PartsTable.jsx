@@ -1,5 +1,4 @@
 import * as React from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
   TableBody,
@@ -11,7 +10,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,32 +19,23 @@ import { roles } from "../../roles";
 import CartApi from "../../apis/CartApi";
 import BuildApi from "../../apis/BuildApi";
 import { addItem } from "../../app/slices/cartSlice";
-import { useEffect, useState } from "react";
-import PartsApi from "../../apis/PartsApi";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+
 import DeletePartDialog from "../DeletePartDialog/DeletePartDialog";
 
 export default function PartsTable({ rows, id }) {
   const role = useSelector(selectRole);
-  const { type } = useParams();
   const cartId = useSelector((state) => state.cart.id);
   const dispatch = useDispatch();
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const handleClick = async (build, part) => {
     try {
       const BiuldApi = new BuildApi();
-      const response = await BiuldApi.addPartToBuild(build, part);
+      await BiuldApi.addPartToBuild(build, part);
       navigate(`/builds/${build}`);
     } catch (err) {
-      setError(err.response.data.message);
-      console.log(err);
+      console.log(err.response.data.message);
     }
   };
 
@@ -60,7 +50,7 @@ export default function PartsTable({ rows, id }) {
   };
 
   const table = (
-    <TableContainer sx={{ width: 1000, margin: "0 auto" }}>
+    <TableContainer sx={{ width: 1200, margin: "0 auto" }}>
       <Table aria-label="parts table">
         <TableHead>
           <TableRow>
@@ -78,10 +68,11 @@ export default function PartsTable({ rows, id }) {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
+              <TableCell component="th" scope="row" align="left">
                 <Button
                   variant="text"
                   onClick={() => navigate(`${pathname}/${row.id}`)}
+                  sx={{ textAlign: "left", textTransform: "none" }}
                 >
                   {row.name}
                 </Button>

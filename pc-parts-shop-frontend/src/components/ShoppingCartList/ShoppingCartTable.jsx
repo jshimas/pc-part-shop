@@ -122,6 +122,7 @@ export default function ShoppingCartTable({ items }) {
             <TableRow key={item.id}>
               <TableCell component="th" scope="row" sx={{ pl: 1 }}>
                 <Button
+                  sx={{ textTransform: "none", textAlign: "left" }}
                   variant="text"
                   onClick={() =>
                     navigate(`/parts/${item.Part.type}/${item.Part.id}`)

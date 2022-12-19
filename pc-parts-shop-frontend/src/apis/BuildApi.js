@@ -5,6 +5,10 @@ export default class BuildApi extends Api {
     return super.init().get(`builds/getBuild?buildId=${id}`);
   };
 
+  getAllBuilds = () => {
+    return super.init().get(`builds/getAllBuilds`);
+  };
+
   createBuild = (name, userId) => {
     return super.init().post(`builds/create?name=${name}&userId=${userId}`);
   };
