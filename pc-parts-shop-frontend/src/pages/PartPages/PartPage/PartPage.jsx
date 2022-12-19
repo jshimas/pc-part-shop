@@ -9,6 +9,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PartsApi from "../../../apis/PartsApi";
 import { useEffect, useState } from "react";
 import { Box, CircularProgress } from "@mui/material";
+import PartDetails from "../../../components/PartDetails/PartDetails";
 
 export default function PartPage() {
   const { type, id } = useParams();
@@ -30,12 +31,14 @@ export default function PartPage() {
         console.log(type);
         const response = await partsApi.getOnePart(id, type);
         setMainPart(response.data.mainPart);
+        setSecondaryPart(response.data.secondaryPart);
         console.log(response.data.secondaryPart);
 
         setError(null);
       } catch (err) {
         console.log(err);
         setMainPart(null);
+        setSecondaryPart(null);
       }
       setLoading(false);
     };
@@ -57,7 +60,9 @@ export default function PartPage() {
         <CircularProgress />
       ) : (
         <div>
-          <h1>{mainPart.name} </h1>
+          <h1 className="">{mainPart.name} </h1>
+          <h2>Manufactured by {mainPart.manufacturer}</h2>
+          <PartDetails mainPart={mainPart} secondaryPart={secondaryPart} />
         </div>
       )}
     </div>

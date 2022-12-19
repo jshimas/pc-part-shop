@@ -13,13 +13,21 @@ export default class PartsApi extends Api {
     return super.init().delete(`/parts?partId=${id}`);
   };
 
-  addPart = async (partName, type, manufacturer, releaseDate, price) => {
+  addPart = async (
+    partName,
+    type,
+    manufacturer,
+    releaseDate,
+    price,
+    details
+  ) => {
     const partData = {
       partName,
       type,
       manufacturer,
       releaseDate,
       price,
+      details,
     };
     console.log(partName);
     console.log(partData);
