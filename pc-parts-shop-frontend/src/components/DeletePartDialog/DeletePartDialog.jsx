@@ -8,10 +8,10 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PartsApi from "../../apis/PartsApi";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export default function AlertDialog({ partId }) {
+export default function AlertDialog({ partId, reRender }) {
   const [open, setOpen] = React.useState(false);
-  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -24,6 +24,7 @@ export default function AlertDialog({ partId }) {
   const handleCloseAgree = () => {
     console.log(partId);
     removePart(partId);
+    window.location.reload(false);
     handleClose();
   };
 
@@ -31,7 +32,7 @@ export default function AlertDialog({ partId }) {
     try {
       const partsApi = new PartsApi();
       const response = await partsApi.deletePart(partId);
-      dispatch(removePart(response.data.item));
+      //dispatch(removePart(response.data.item));
     } catch (err) {
       console.log(err);
     }

@@ -6,38 +6,59 @@ import { roles } from "../../../roles";
 import RemoveCircleOutlinedIcon from "@mui/icons-material/RemoveCircleOutlined";
 import { useSelector } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
+import PartsApi from "../../../apis/PartsApi";
+import { useEffect, useState } from "react";
+import { Box, CircularProgress } from "@mui/material";
 
 export default function PartPage() {
   const { type, id } = useParams();
-
+  const [loading, setLoading] = useState(true);
+  const [mainPart, setMainPart] = useState(null);
+  const [secondaryPart, setSecondaryPart] = useState(null);
+  const [error, setError] = useState(null);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   const role = useSelector(selectRole);
 
+  useEffect(() => {
+    const retrievePart = async () => {
+      try {
+        const partsApi = new PartsApi();
+        console.log(id);
+
+        console.log(type);
+        const response = await partsApi.getOnePart(id, type);
+        setMainPart(response.data.mainPart);
+        console.log(response.data.secondaryPart);
+
+        setError(null);
+      } catch (err) {
+        console.log(err);
+        setMainPart(null);
+      }
+      setLoading(false);
+    };
+    retrievePart();
+  }, [id, type]);
+
+  // const retrievePart = async () => {
+  //   try {
+  //     const partsApi = new PartsApi();
+  //     const response = await partsApi.getPartsByType(type);
+  //     setPart(response.data.mainPart);
+  //     //console.log(name);
+  //   } catch (err) {}
+  // };
+
   return (
     <div>
-      <h3>
-        {type} part page, ID: {id}
-      </h3>
-      {role === roles.ADMIN && (
-        <Button
-          variant="outlined"
-          startIcon={<RemoveCircleOutlinedIcon />}
-          onClick={() => navigate(`${pathname}/remove`)}
-        >
-          Remove {type.split("-").join(" ")}
-        </Button>
-      )}
-
-      {role === roles.ADMIN && (
-        <Button
-          variant="outlined"
-          startIcon={<EditIcon />}
-          onClick={() => navigate(`${pathname}/edit`)}
-        >
-          Edit {type.split("-").join(" ")}
-        </Button>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <div>
+          <h1>{mainPart.name} </h1>
+        </div>
       )}
     </div>
   );

@@ -5,19 +5,21 @@ export default class PartsApi extends Api {
     return super.init().get(`/parts?type=${type}`); //&partId=${null}
   };
 
-  getPart = async (id) => {
-    return super.init().get(`/parts?partId=${id}&type=${null}&action=single`);
+  getOnePart = async (id, type) => {
+    return super.init().get(`/parts/get-part?partId=${id}&type=${type}`); //parts?partId=${id}&type=${type}&action=single);
   };
 
   deletePart = async (id) => {
     return super.init().delete(`/parts?partId=${id}`);
   };
 
-  addPart = async (
-    partName //, partType, manufacturer, releaseDate, price
-  ) => {
+  addPart = async (partName, type, manufacturer, releaseDate, price) => {
     const partData = {
       partName,
+      type,
+      manufacturer,
+      releaseDate,
+      price,
     };
     console.log(partName);
     console.log(partData);

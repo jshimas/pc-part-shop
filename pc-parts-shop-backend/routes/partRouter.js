@@ -12,4 +12,6 @@ router
 
 router.post('/create-part', partdController.createPart);
 
+router.get('/get-part', partdController.getOnePart);
+
 module.exports = router;
