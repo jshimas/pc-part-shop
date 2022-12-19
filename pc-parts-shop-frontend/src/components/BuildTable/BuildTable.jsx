@@ -81,7 +81,7 @@ export default function BuildTable({ rows, missing, buildId, buildMaker}) {
               <TableCell align="right">{row.manufacturer}</TableCell>
               <TableCell align="right">{row.releaseDate}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              {role === roles.ADMIN && (
+              {role !== roles.GUEST && (role === roles.ADMIN || buildMaker === usrID) && (
                 <TableCell align="right">
                   <DeleteBuildPartDialog partId={row.id} buildId={buildId} />
                 </TableCell>
