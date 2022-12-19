@@ -17,6 +17,12 @@ export default class BuildApi extends Api {
     return super.init().post(`builds/add?buildId=${buildId}&partId=${partId}`);
   };
 
+  removeBuildPart = async (buildId, partId) => {
+    console.log(buildId);
+    console.log(partId);
+    return super.init().delete(`builds/removePart?buildId=${buildId}&partId=${partId}`);
+  };
+
   checkCompatibility = (buildId) => {
     return super.init().get(`builds/check?buildId=${buildId}`);
   };

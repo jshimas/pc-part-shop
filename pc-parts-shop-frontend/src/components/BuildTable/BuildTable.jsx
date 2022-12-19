@@ -19,6 +19,7 @@ import { roles } from "../../roles";
 import CartApi from "../../apis/CartApi";
 import { replaceCart, resetCartStatus } from "../../app/slices/cartSlice";
 import useAlert from "../../hooks/useAlert";
+import DeleteBuildPartDialog from "../DeleteBuildPartDialog/DeleteBuildPartDialog";
 // import CartApi from "../../../apis/CartApi";
 // import { addItem } from "../../../App/slices/cartSlice";
 
@@ -80,26 +81,11 @@ export default function BuildTable({ rows, missing, buildId, buildMaker}) {
               <TableCell align="right">{row.manufacturer}</TableCell>
               <TableCell align="right">{row.releaseDate}</TableCell>
               <TableCell align="right">{row.price}</TableCell>
-              {/* {role !== roles.GUEST && (
+              {role === roles.ADMIN && (
                 <TableCell align="right">
-                  <Box sx={{ display: "inline-flex", gap: 2 }}>
-                    <Button
-                      onClick={handleClick}
-                      variant="contained"
-                      startIcon={<AddIcon />}
-                    >
-                      Add to build
-                    </Button>
-                    <Button
-                      onClick={() => addToCart(row.id)}
-                      variant="outlined"
-                      startIcon={<ShoppingCartIcon />}
-                    >
-                      Buy
-                    </Button>
-                  </Box>
+                  <DeleteBuildPartDialog partId={row.id} buildId={buildId} />
                 </TableCell>
-              )} */}
+              )}
             </TableRow>
           ))}
           {/* {missing.map((row) => (
