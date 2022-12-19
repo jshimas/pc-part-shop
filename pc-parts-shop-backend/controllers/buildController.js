@@ -1,4 +1,5 @@
 const {
+  User,
   Build,
   BuildPart,
   Part,
@@ -14,13 +15,15 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 
 exports.getAllBuilds = catchAsync(async (req, res, next) => {
-  const build = await Build.findAll();
+  const builds = await Build.findAll({
+    include: [{ model: User }, { model: BuildPart, include: Part }],
+  });
 
-  if (!build) return next(new AppError('No builds found'));
+  if (!builds) return next(new AppError('No builds found'));
 
   res.status(200).json({
     status: 'success',
-    build,
+    builds,
   });
 });
 
