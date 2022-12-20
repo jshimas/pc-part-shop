@@ -197,61 +197,76 @@ exports.createPart = catchAsync(async (req, res) => {
 });
 
 exports.deletePart = catchAsync(async (req, res) => {
-  const { partId } = req.query; //req.query;
-  var secondaryPartToDestroy;
+  try {
+    const { partId } = req.query; //req.query;
+    var secondaryPartToDestroy;
 
-  const partToDestroy = await Part.findOne({ where: { id: partId } });
+    console.log(partId);
 
-  console.log(partToDestroy);
+    const partToDestroy = await Part.findOne({ where: { id: partId } });
 
-  if (!partToDestroy) return next(new AppError('No part to destroy'));
+    if (!partToDestroy) return next(new AppError('No part to destroy'));
 
-  const type = partToDestroy.type;
-  switch (type) {
-    case 'cpu':
-      secondaryPartToDestroy = await CPU.findOne({ where: { partId: partId } });
-      break;
-    case 'gpu':
-      secondaryPartToDestroy = await GPU.findOne({ where: { partId: partId } });
-      break;
-    case 'cooler':
-      secondaryPartToDestroy = await Cooler.findOne({
-        where: { partId: partId },
-      });
-      break;
-    case 'memory':
-      secondaryPartToDestroy = await ExternalMemory.findOne({
-        where: { partId: partId },
-      });
-      break;
-    case 'motherboard':
-      secondaryPartToDestroy = await Motherboard.findOne({
-        where: { partId: partId },
-      });
-      break;
-    case 'PSU':
-      secondaryPartToDestroy = await PSU.findOne({ where: { partId: partId } });
-      break;
-    case 'ram':
-      secondaryPartToDestroy = await RAM.findOne({ where: { partId: partId } });
-      break;
-    default:
-      return;
+    const type = partToDestroy.type;
+    switch (type) {
+      case 'cpu':
+        secondaryPartToDestroy = await CPU.findOne({
+          where: { partId: partId },
+        });
+        break;
+      case 'gpu':
+        secondaryPartToDestroy = await GPU.findOne({
+          where: { partId: partId },
+        });
+        break;
+      case 'cooler':
+        secondaryPartToDestroy = await Cooler.findOne({
+          where: { partId: partId },
+        });
+        break;
+      case 'memory':
+        secondaryPartToDestroy = await ExternalMemory.findOne({
+          where: { partId: partId },
+        });
+        break;
+      case 'motherboard':
+        secondaryPartToDestroy = await Motherboard.findOne({
+          where: { partId: partId },
+        });
+        break;
+      case 'PSU':
+        secondaryPartToDestroy = await PSU.findOne({
+          where: { partId: partId },
+        });
+        break;
+      case 'ram':
+        secondaryPartToDestroy = await RAM.findOne({
+          where: { partId: partId },
+        });
+        break;
+      default:
+        return;
+    }
+    if (!secondaryPartToDestroy)
+      return next(new AppError('No part to destroy'));
+
+    const destroyedMain = await partToDestroy.destroy({
+      force: true,
+    });
+    const destroyedSecond = await secondaryPartToDestroy.destroy({
+      force: true,
+    });
+  } catch (err) {
+    res.status(200).json({
+      status: 'error',
+      message: err,
+    });
   }
-  if (!secondaryPartToDestroy) return next(new AppError('No part to destroy'));
-
-  const destroyedMain = await partToDestroy.destroy({
-    force: true,
-  });
-  const destroyedSecond = await secondaryPartToDestroy.destroy({
-    force: true,
-  });
-
   res.status(204).json({
     status: 'Destroed',
     message: 'test',
-    partToDestroy,
-    partId,
+    //partToDestroy,
+    //partId,
     // destroyedMain,
     // destroyedSecond,
   });
