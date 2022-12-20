@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default function AccoutnsPage() {
+export default function AccountsPage() {
   return (
     <div>
       <h3>Accounts page</h3>

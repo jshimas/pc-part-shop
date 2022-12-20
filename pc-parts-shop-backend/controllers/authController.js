@@ -3,6 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { User, UserRoleEnum, ShoppingCart } = require('../models');
 const AppError = require('../utils/appError');
 
+
 const signToken = (id) =>
   jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -25,6 +26,8 @@ const createSendToken = (user, statusCode, res) => {
       id: user.id,
       fullName: user.fullName,
       email: user.email,
+      phone: user.phone,
+      birthDate: user.birthDate,
       role: user.role,
     },
   });
@@ -40,6 +43,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    phone: req.body.phone,
+    birthDate: req.body.date,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     roleEnum: req.body.roleEnum,
@@ -52,6 +57,21 @@ exports.signup = catchAsync(async (req, res, next) => {
     role: roleEnum.role,
   };
 
+  createSendToken(user, 201, res);
+});
+
+exports.update = catchAsync(async (req, res, next) => {
+
+  
+  await User.update({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    birthDate: req.body.birthDate,
+    phone: req.body.phone,
+    },{
+    where: {email: req.body.email},
+  })
+  const user = await User.findOne({ where: { email: req.body.email } });
   createSendToken(user, 201, res);
 });
 
@@ -90,7 +110,7 @@ exports.getUserData = catchAsync(async (req, res, next) => {
         model: UserRoleEnum,
         attributes: ['role'],
       },
-      attributes: ['id', 'firstName', 'lastName', 'fullName', 'email'],
+      attributes: ['id', 'firstName', 'lastName', 'fullName', 'email', 'phone', 'birthDate'],
     });
     currentUser = user.toJSON();
     currentUser.role = currentUser.UserRoleEnum.role;
@@ -105,7 +125,11 @@ exports.getUserData = catchAsync(async (req, res, next) => {
   });
 });
 
+
+
 exports.logout = catchAsync(async (req, res, next) => {
+  
   res.clearCookie('jwt');
   res.status(204).json({});
 });
+

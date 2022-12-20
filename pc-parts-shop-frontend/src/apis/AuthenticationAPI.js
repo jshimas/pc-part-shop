@@ -9,6 +9,10 @@ export default class AuthenticationApi extends Api {
     return super.init().post("/users/signup", data);
   };
 
+  update = async (data) => {
+    return super.init().post("/users/update", data);
+  };
+
   getCurrentUser = async () => {
     return super.init().get("/users/current-user-data");
   };
