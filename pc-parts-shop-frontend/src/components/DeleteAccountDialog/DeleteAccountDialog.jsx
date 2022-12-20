@@ -6,12 +6,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AuthenticationApi from "../../apis/AuthenticationAPI";
 import PartsApi from "../../apis/PartsApi";
 import BuildApi from "../../apis/BuildApi";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-export default function AlertDialog({ buildId, partId, reRender }) {
+export default function AlertDialog({id}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -24,16 +25,16 @@ export default function AlertDialog({ buildId, partId, reRender }) {
 
   //runs when user agrees to the popup
   const handleCloseAgree = () => {
-    removePart(buildId, partId);
+    removePart(id);
     window.location.reload(false);
     handleClose();
   };
 
   //removes the part
-  const removePart = async (buildId, partId) => {
+  const removePart = async (id) => {
     try {
-      const buildApi = new BuildApi();
-      const response = await buildApi.removeBuildPart(buildId, partId);
+      const authApi = new AuthenticationApi();
+      const response = await authApi.delete(id);
     } catch (err) {
       console.log(err);
     }
@@ -53,7 +54,7 @@ export default function AlertDialog({ buildId, partId, reRender }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Delete part from build?"}
+          {"Delete account?"}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description"></DialogContentText>

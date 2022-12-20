@@ -22,8 +22,6 @@ export default class BuildApi extends Api {
   };
 
   removeBuildPart = async (buildId, partId) => {
-    console.log(buildId);
-    console.log(partId);
     return super.init().delete(`builds/removePart?buildId=${buildId}&partId=${partId}`);
   };
 

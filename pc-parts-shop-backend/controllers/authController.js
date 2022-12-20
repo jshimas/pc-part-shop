@@ -125,7 +125,50 @@ exports.getUserData = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAll = catchAsync(async (req, res, next) => {
+  const { jwt: token } = req.cookies;
 
+  let currentUser;
+  if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findByPk(decoded.id, {
+      include: {
+        model: UserRoleEnum,
+        attributes: ['role'],
+      },
+      attributes: ['id', 'firstName', 'lastName', 'fullName', 'email', 'phone', 'birthDate'],
+    });
+    currentUser = user.toJSON();
+    currentUser.role = currentUser.UserRoleEnum.role;
+  } else {
+    currentUser = {
+      role: 'guest',
+    };
+  }
+  let data;
+  const { Op } = require("sequelize");
+  if(currentUser.role == "admin"){
+    data = await User.findAll({
+      where:{ email: {[Op.ne]: currentUser.email} }
+    });
+  }
+  else{
+    data = null;
+  }
+  res.status(200).json({
+    data,
+  });
+});
+
+exports.delete = catchAsync(async (req, res, next) => {
+  await User.destroy({
+    where:{
+      id: req.body
+    }
+  });
+
+  res.status(204).json({});
+})
 
 exports.logout = catchAsync(async (req, res, next) => {
   
