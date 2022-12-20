@@ -9,6 +9,10 @@ export default class AuthenticationApi extends Api {
     return super.init().post("/users/signup", data);
   };
 
+  update = async (data) => {
+    return super.init().post("/users/update", data);
+  };
+
   getCurrentUser = async () => {
     return super.init().get("/users/current-user-data");
   };
@@ -16,4 +20,12 @@ export default class AuthenticationApi extends Api {
   logout = async () => {
     return super.init().post("users/logout");
   };
+
+  deleteUser = async (id) =>{
+    return super.init().delete("users/delete", id);
+  }
+
+  getAllUsers = async () =>{
+    return super.init().get("users/getAll");
+  }
 }

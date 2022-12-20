@@ -22,6 +22,7 @@ import { fetchItems } from "./app/slices/cartSlice";
 import { fetchUser } from "./app/slices/userSlice";
 import SuccessfulCheckoutPage from "./pages/ShoppingCartPage/SuccessfulCheckoutPage";
 import AlertPopup from "./components/AlertPopup/AlertPopup";
+import ProfileEditPage from "./pages/ProfilePage/ProfileEditPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ function App() {
 
           <Route path="cart" element={<ShoppingCartPage />} />
           <Route path="profile" element={<ProfilePage />} />
+          <Route path="profileEdit" element={<ProfileEditPage />} />
           <Route path="accounts" element={<AccountsPage />} />
           <Route path="success" element={<SuccessfulCheckoutPage />} />
         </Route>

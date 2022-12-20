@@ -71,12 +71,7 @@ export default function BuildTable({ rows, missing, buildId, buildMaker}) {
             <TableRow key={row.name}>
               <TableCell>{row.type}</TableCell>
               <TableCell component="th" scope="row">
-                {/* <Button
-                  variant="text"
-                  onClick={() => navigate(`${pathname}/${row.id}`)}
-                > */}
                   {row.name}
-                {/* </Button> */}
               </TableCell>
               <TableCell align="right">{row.manufacturer}</TableCell>
               <TableCell align="right">{row.releaseDate}</TableCell>
@@ -88,18 +83,6 @@ export default function BuildTable({ rows, missing, buildId, buildMaker}) {
               )}
             </TableRow>
           ))}
-          {/* {missing.map((row) => (
-            <TableRow>
-              <TableCell component="th" scope="row">{row}</TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right">
-                <Button href={"/parts/" + row}>
-                  ADD Component
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))} */}
         </TableBody>
       </Table>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>

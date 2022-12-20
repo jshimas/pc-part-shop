@@ -148,6 +148,50 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
+                id="phone"
+                label="Phone number"
+                name="phone"
+                autoComplete="phone"
+                {...register("phone", {
+                  required: { value: true, message: "Phone is required." },
+                  pattern: {
+                    value: /^(\+[0-9]{2})?[0-9]{9}$/,
+                    message: "Invalid Phone number.",
+                  },
+                })}
+                {...(errors.phone && {
+                  error: true,
+                  helperText: errors.phone.message,
+                })}
+                {...(error && {
+                  error: true,
+                  helperText: error,
+                })}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                type="date"
+                id="date"
+                label="Birthday"
+                name="date"
+                autoComplete="date"
+                {...register("date", {
+                  required: { value: true, message: "Birthdate is required." },
+                })}
+                {...(errors.date && {
+                  error: true,
+                  helperText: errors.date.message,
+                })}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
                 name="password"
                 label="Password"
                 type="password"
