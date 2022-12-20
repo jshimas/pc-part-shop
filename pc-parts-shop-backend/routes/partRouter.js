@@ -7,8 +7,10 @@ router
   .route('/')
   .get(partdController.getParts)
   //.post(partdController.createPart)
-  .delete(partdController.deletePart)
+  //.delete(partdController.deletePart)
   .patch(partdController.editPart);
+
+router.delete('/delete-part', partdController.deletePart);
 
 router.post('/create-part', partdController.createPart);
 

@@ -21,16 +21,19 @@ export default function AlertDialog({ partId, reRender }) {
   };
 
   const handleCloseAgree = () => {
-    console.log(partId);
+    console.log("closeagree");
     removePart(partId);
-    window.location.reload(false);
+
     handleClose();
+    window.location.reload(false);
   };
 
   const removePart = async (partId) => {
     try {
+      console.log("partId");
       const partsApi = new PartsApi();
       const response = await partsApi.deletePart(partId);
+      console.log(response);
       //dispatch(removePart(response.data.item));
     } catch (err) {
       console.log(err);

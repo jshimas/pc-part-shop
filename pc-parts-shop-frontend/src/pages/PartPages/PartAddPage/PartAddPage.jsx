@@ -14,6 +14,9 @@ import AddCPU from "../../../components/PartAddOptions/AddCPU";
 import { useEffect, useState } from "react";
 import AlertPopup from "../../../components/AlertPopup/AlertPopup";
 
+import Input from "@mui/material/Input";
+
+const ariaLabel = { "aria-label": "description" };
 export default function PartAddPage() {
   const [error, setError] = useState(null);
   const { type } = useParams();
@@ -22,11 +25,17 @@ export default function PartAddPage() {
   const [releaseDate, setReleaseDate] = useState(null);
   const [price, setPrice] = useState(null);
   const [details, setDetails] = useState(null);
+  const [count, setCount] = useState(0);
+  const [secondaryPart, setSecondaryPart] = useState(null);
 
-  const partsApi1 = new PartsApi();
+  const handleChange = (event, num) => {
+    console.log(secondaryPart);
+    //setCount((current) => current + num);
+  };
 
-  const handleAdding = async () => {
+  const handleAdding = async (secondaryPartData) => {
     const partsApi = new PartsApi();
+
     try {
       //if (partName === null || partName === "") {
       //  setPartName(undefined);
@@ -39,8 +48,11 @@ export default function PartAddPage() {
         manufacturer,
         releaseDate,
         price,
-        details
+        details,
+        secondaryPart
       );
+
+      console.log(response);
     } catch (err) {
       setError(err.response.data.message);
       console.log(err);
@@ -64,7 +76,7 @@ export default function PartAddPage() {
 
   return (
     <div>
-      <h3>{type} add page</h3>(
+      <h3>Pateikite {type} informacija</h3>(
       <Button
         variant="outlined"
         startIcon={<AddIcon />}
@@ -72,71 +84,85 @@ export default function PartAddPage() {
       >
         Add {type.split("-").join(" ")}
       </Button>
-      <Button
+      {/* <Button
         variant="outlined"
         startIcon={<AddIcon />}
         onClick={() => partsApi1.deletePart(8)}
       >
         remove {type.split("-").join(" ")}
-      </Button>
+      </Button> */}
       )
-      <div>
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="Part name"
-          variant="filled"
-          onChange={(event) => {
-            setPartName(event.target.value);
-          }}
-        />
-
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="Manufacturer name"
-          variant="filled"
-          onChange={(event) => {
-            setManufacturer(event.target.value);
-          }}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="Release date"
-          variant="filled"
-          onChange={(event) => {
-            setReleaseDate(event.target.value);
-          }}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="Price"
-          variant="filled"
-          InputProps={{
-            startAdornment: <InputAdornment position="start">€</InputAdornment>,
-          }}
-          onChange={(event) => {
-            setPrice(event.target.value);
-          }}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="filled-hidden-label-normal"
-          label="Details"
-          variant="filled"
-          onChange={(event) => {
-            setDetails(event.target.value);
-          }}
-        />
-      </div>
-      <AddCPU />
+      <Box
+        sx={{
+          "& .MuiTextField-root": { m: 1, width: "25ch" },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <div>
+          <TextField
+            sx={{ mt: 3 }}
+            hiddenLabel
+            id="filled-hidden-label-normal"
+            label="Part name"
+            variant="filled"
+            onChange={(event) => {
+              setPartName(event.target.value);
+              console.log(secondaryPart);
+            }}
+          />
+          <TextField
+            sx={{ mt: 3 }}
+            hiddenLabel
+            id="filled-hidden-label-normal"
+            label="Manufacturer name"
+            variant="filled"
+            onChange={(event) => {
+              setManufacturer(event.target.value);
+            }}
+          />
+          <TextField
+            sx={{ mt: 3 }}
+            hiddenLabel
+            id="filled-hidden-label-normal"
+            label="Release date"
+            variant="filled"
+            onChange={(event) => {
+              setReleaseDate(event.target.value);
+            }}
+          />
+          <TextField
+            sx={{ mt: 3 }}
+            hiddenLabel
+            id="filled-hidden-label-normal"
+            label="Price"
+            variant="filled"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">€</InputAdornment>
+              ),
+            }}
+            onChange={(event) => {
+              setPrice(event.target.value);
+            }}
+          />
+          <TextField
+            sx={{ mt: 3 }}
+            hiddenLabel
+            id="filled-hidden-label-normal"
+            label="Details"
+            variant="filled"
+            onChange={(event) => {
+              setDetails(event.target.value);
+            }}
+          />
+          <AddCPU
+            handleChange={handleChange}
+            setSecondaryPart={setSecondaryPart}
+          />
+          <h2>Count: {count}</h2>
+        </div>
+      </Box>
     </div>
   );
 }
