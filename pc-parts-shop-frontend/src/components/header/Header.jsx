@@ -49,6 +49,14 @@ const parts = [
     name: "Gpus",
     link: "parts/gpu",
   },
+  {
+    name: "Coolers",
+    link: "parts/cooler",
+  },
+  {
+    name: "PSUs",
+    link: "parts/psu",
+  },
 ];
 
 export default function Header() {

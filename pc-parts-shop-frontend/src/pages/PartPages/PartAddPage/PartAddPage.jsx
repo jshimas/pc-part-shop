@@ -10,9 +10,16 @@ import {
 import InputAdornment from "@mui/material/InputAdornment";
 import AddIcon from "@mui/icons-material/Add";
 import PartsApi from "../../../apis/PartsApi";
-import AddCPU from "../../../components/PartAddOptions/AddCPU";
+
 import { useEffect, useState } from "react";
 import AlertPopup from "../../../components/AlertPopup/AlertPopup";
+import AddCPU from "../../../components/PartAddOptions/AddCPU";
+import AddCoolers from "../../../components/PartAddOptions/AddCoolers";
+import AddExternalMemory from "../../../components/PartAddOptions/AddExternalMemory";
+import AddGPU from "../../../components/PartAddOptions/AddGPU";
+import AddMotherboard from "../../../components/PartAddOptions/AddMotherboard";
+import AddPSU from "../../../components/PartAddOptions/AddPSU";
+import AddRAM from "../../../components/PartAddOptions/AddRAM";
 
 import Input from "@mui/material/Input";
 
@@ -33,14 +40,14 @@ export default function PartAddPage() {
     //setCount((current) => current + num);
   };
 
-  const handleAdding = async (secondaryPartData) => {
+  const handleAdding = async () => {
     const partsApi = new PartsApi();
 
     try {
       //if (partName === null || partName === "") {
       //  setPartName(undefined);
       //}
-      console.log(partName);
+      console.log(secondaryPart);
 
       const response = await partsApi.addPart(
         partName,
@@ -156,11 +163,19 @@ export default function PartAddPage() {
               setDetails(event.target.value);
             }}
           />
-          <AddCPU
-            handleChange={handleChange}
-            setSecondaryPart={setSecondaryPart}
-          />
-          <h2>Count: {count}</h2>
+          {type === "cpu" && <AddCPU setSecondaryPart={setSecondaryPart} />}
+          {type === "gpu" && <AddGPU setSecondaryPart={setSecondaryPart} />}
+          {type === "ram" && <AddRAM setSecondaryPart={setSecondaryPart} />}
+          {type === "motherboard" && (
+            <AddMotherboard setSecondaryPart={setSecondaryPart} />
+          )}
+          {type === "memory" && (
+            <AddExternalMemory setSecondaryPart={setSecondaryPart} />
+          )}
+          {type === "cooler" && (
+            <AddCoolers setSecondaryPart={setSecondaryPart} />
+          )}
+          {type === "psu" && <AddPSU setSecondaryPart={setSecondaryPart} />}
         </div>
       </Box>
     </div>

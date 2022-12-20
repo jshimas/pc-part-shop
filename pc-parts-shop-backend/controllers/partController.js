@@ -56,7 +56,7 @@ exports.getOnePart = catchAsync(async (req, res, next) => {
     case 'motherboard':
       secondaryPart = await Motherboard.findOne({ where: { partId: partId } });
       break;
-    case 'PSU':
+    case 'psu':
       secondaryPart = await PSU.findOne({ where: { partId: partId } });
       break;
     case 'ram':
@@ -89,6 +89,7 @@ exports.createPart = catchAsync(async (req, res) => {
     details,
     secondaryPart,
   } = req.body;
+  var newSecondaryPart;
 
   const newPart = await Part.create({
     name: partName,
@@ -101,21 +102,97 @@ exports.createPart = catchAsync(async (req, res) => {
     updatedAt: new Date(),
   });
 
-  const newSecondaryPart = await CPU.create({
-    socketStandart: secondaryPart.socketStandart,
-    frequancy: secondaryPart.socketStandart,
-    coreQuantity: secondaryPart.coreQuantity,
-    threadQuantity: secondaryPart.threadQuantity,
-    partId: newPart.id,
-  });
-  const idee = newPart.id;
+  switch (type) {
+    case 'cpu':
+      newSecondaryPart = await CPU.create({
+        socketStandart: secondaryPart.socketStandart,
+        frequancy: secondaryPart.frequancy,
+        coreQuantity: secondaryPart.coreQuantity,
+        threadQuantity: secondaryPart.threadQuantity,
+        partId: newPart.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      break;
+    case 'gpu':
+      newSecondaryPart = await GPU.create({
+        vramQuantity: secondaryPart.vramQuantity,
+        vramFrequancy: secondaryPart.vramFrequancy,
+        frequancy: secondaryPart.frequancy,
+        pcieStandartEnum: secondaryPart.pcieStandartEnum,
+        partId: newPart.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      break;
+    case 'cooler':
+      newSecondaryPart = await Cooler.create({
+        height: secondaryPart.height,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        partId: newPart.id,
+      });
+      break;
+    case 'memory':
+      newSecondaryPart = await ExternalMemory.create({
+        readSpeed: secondaryPart.readSpeed,
+        writeSpeed: secondaryPart.writeSpeed,
+        capacity: secondaryPart.capacity,
+        connectorType: secondaryPart.connectorType,
+        partId: newPart.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      break;
+    case 'motherboard':
+      newSecondaryPart = await Motherboard.create({
+        cpuSocketStandart: secondaryPart.cpuSocketStandart,
+        cpuSocketQuantity: secondaryPart.cpuSocketQuantity,
+        ramTypeEnum: secondaryPart.ramTypeEnum,
+        ramSocketQuantity: secondaryPart.ramSocketQuantity,
+        m2ssdSocketQuantity: secondaryPart.m2ssdSocketQuantity,
+        sataSocketQuantity: secondaryPart.sataSocketQuantity,
+        pcieStandartEnum: secondaryPart.pcieStandartEnum,
+        pcieSocketQuantity: secondaryPart.pcieSocketQuantity,
+        partId: newPart.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      break;
+    case 'psu':
+      newSecondaryPart = await PSU.create({
+        powerCapacity: secondaryPart.powerCapacity,
+
+        partId: newPart.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      break;
+    case 'ram':
+      newSecondaryPart = await RAM.create({
+        frequancy: secondaryPart.frequancy,
+        capacity: secondaryPart.capacity,
+        ramTypeEnum: secondaryPart.ramTypeEnum,
+
+        partId: newPart.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      break;
+    default:
+      res.status(500).json({
+        status: 'error',
+        message: 'wrong part type entered',
+      });
+      return;
+  }
 
   res.status(201).json({
     status: 'success',
     message: 'Part Added!',
-    idee,
-    // newPart,
-    //newSecondaryPart,
+
+    newPart,
+    newSecondaryPart,
   });
 });
 

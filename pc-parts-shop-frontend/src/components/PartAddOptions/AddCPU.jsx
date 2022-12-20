@@ -36,19 +36,18 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         case "thread":
           setthreadQuantity(event.target.value);
           break;
+        default:
+          break;
       }
     } finally {
-      console.log(partData);
     }
   };
 
   useEffect(() => {
     const setData = () => {
-      setPartData(
+      setSecondaryPart(
         createData(socketStandart, frequancy, coreQuantity, threadQuantity)
       );
-
-      setSecondaryPart(partData);
     };
     setData();
   });
@@ -65,9 +64,6 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
 
   return (
     <div>
-      <div>
-        <button onClick={(event) => setSecondaryPart(partData)}>Click</button>
-      </div>
       <div>
         <TextField
           sx={{ mt: 3 }}
