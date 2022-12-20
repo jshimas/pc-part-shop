@@ -135,12 +135,12 @@ export default function ProfileEditPage() {
             required
             fullWidth
             InputLabelProps={{ shrink: true }}
-            type="date"
-            id="date"
+            type="birthDate"
+            id="birthDate"
             label="Birthday"
-            name="date"
-            autoComplete="date"
-            {...register("date", {
+            name="birthDate"
+            autoComplete="birthDate"
+            {...register("birthDate", {
               required: { value: true, message: "Birthdate is required." },
             })}
             {...(errors.date && {
