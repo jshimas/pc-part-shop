@@ -9,32 +9,29 @@ import {
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function createData(socketStandart, frequancy, coreQuantity, threadQuantity) {
-  return { socketStandart, frequancy, coreQuantity, threadQuantity };
+function createData(frequancy, capacity, ramTypeEnum) {
+  return { frequancy, capacity, ramTypeEnum };
 }
 
-export default function AddCPU({ handleChange, setSecondaryPart }) {
+export default function AddGPU({ setSecondaryPart }) {
   const [partData, setPartData] = useState(null);
-  const [socketStandart, setSocketStandart] = useState(null);
   const [frequancy, setfrequancy] = useState(null);
-  const [coreQuantity, setcoreQuantity] = useState(null);
-  const [threadQuantity, setthreadQuantity] = useState(null);
+  const [capacity, setcapacity] = useState(null);
+  const [ramTypeEnum, setramTypeEnum] = useState(null);
+
   //var partData;
 
   const handleInternalChange = async (event) => {
     try {
       switch (event.target.id) {
-        case "socket":
-          setSocketStandart(event.target.value);
-          break;
-        case "frequency":
+        case "frequancy":
           setfrequancy(event.target.value);
           break;
-        case "core":
-          setcoreQuantity(event.target.value);
+        case "capacity":
+          setcapacity(event.target.value);
           break;
-        case "thread":
-          setthreadQuantity(event.target.value);
+        case "ramTypeEnum":
+          setramTypeEnum(event.target.value);
           break;
         default:
           break;
@@ -45,9 +42,7 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
 
   useEffect(() => {
     const setData = () => {
-      setSecondaryPart(
-        createData(socketStandart, frequancy, coreQuantity, threadQuantity)
-      );
+      setSecondaryPart(createData(frequancy, capacity, ramTypeEnum));
     };
     setData();
   });
@@ -68,8 +63,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="socket"
-          label="Socket Standart"
+          id="frequancy"
+          label="RAM Frequency"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -78,8 +73,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="frequency"
-          label="Frequency"
+          id="capacity"
+          label="RAM capacity"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -88,18 +83,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="core"
-          label="Core Quantity"
-          variant="filled"
-          onChange={(event) => {
-            handleInternalChange(event);
-          }}
-        />
-        <TextField
-          sx={{ mt: 3 }}
-          hiddenLabel
-          id="thread"
-          label="Thread Quantity"
+          id="ramTypeEnum"
+          label="RAM Type Enum"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);

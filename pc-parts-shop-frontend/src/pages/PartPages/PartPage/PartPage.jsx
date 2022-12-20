@@ -26,13 +26,9 @@ export default function PartPage() {
     const retrievePart = async () => {
       try {
         const partsApi = new PartsApi();
-        console.log(id);
-
-        console.log(type);
         const response = await partsApi.getOnePart(id, type);
         setMainPart(response.data.mainPart);
         setSecondaryPart(response.data.secondaryPart);
-        console.log(response.data.secondaryPart);
 
         setError(null);
       } catch (err) {

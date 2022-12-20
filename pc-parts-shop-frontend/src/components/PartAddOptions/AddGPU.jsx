@@ -9,32 +9,32 @@ import {
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function createData(socketStandart, frequancy, coreQuantity, threadQuantity) {
-  return { socketStandart, frequancy, coreQuantity, threadQuantity };
+function createData(vramQuantity, vramFrequancy, frequancy, pcieStandartEnum) {
+  return { vramQuantity, vramFrequancy, frequancy, pcieStandartEnum };
 }
 
-export default function AddCPU({ handleChange, setSecondaryPart }) {
+export default function AddGPU({ setSecondaryPart }) {
   const [partData, setPartData] = useState(null);
-  const [socketStandart, setSocketStandart] = useState(null);
+  const [vramQuantity, setvramQuantity] = useState(null);
+  const [vramFrequancy, setvramFrequancy] = useState(null);
   const [frequancy, setfrequancy] = useState(null);
-  const [coreQuantity, setcoreQuantity] = useState(null);
-  const [threadQuantity, setthreadQuantity] = useState(null);
+  const [pcieStandartEnum, setpcieStandartEnum] = useState(null);
   //var partData;
 
   const handleInternalChange = async (event) => {
     try {
       switch (event.target.id) {
-        case "socket":
-          setSocketStandart(event.target.value);
+        case "vram":
+          setvramQuantity(event.target.value);
           break;
-        case "frequency":
+        case "vramF":
+          setvramFrequancy(event.target.value);
+          break;
+        case "coreF":
           setfrequancy(event.target.value);
           break;
-        case "core":
-          setcoreQuantity(event.target.value);
-          break;
-        case "thread":
-          setthreadQuantity(event.target.value);
+        case "pcie":
+          setpcieStandartEnum(event.target.value);
           break;
         default:
           break;
@@ -46,7 +46,7 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
   useEffect(() => {
     const setData = () => {
       setSecondaryPart(
-        createData(socketStandart, frequancy, coreQuantity, threadQuantity)
+        createData(vramQuantity, vramFrequancy, frequancy, pcieStandartEnum)
       );
     };
     setData();
@@ -68,8 +68,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="socket"
-          label="Socket Standart"
+          id="vram"
+          label="VRAM Quantity"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -78,8 +78,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="frequency"
-          label="Frequency"
+          id="vramF"
+          label="VRAM Frequency"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -88,8 +88,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="core"
-          label="Core Quantity"
+          id="coreF"
+          label="Core Frequency"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -98,8 +98,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="thread"
-          label="Thread Quantity"
+          id="pcie"
+          label="PcieStandartEnum"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);

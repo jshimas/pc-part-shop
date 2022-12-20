@@ -17,6 +17,9 @@ import RAMDetails from "./RAMDetails";
 
 export default function PartDetails({ mainPart, secondaryPart }) {
   const handleRender = () => {};
+  {
+    console.log(secondaryPart);
+  }
 
   return (
     <div>
@@ -53,7 +56,7 @@ export default function PartDetails({ mainPart, secondaryPart }) {
                   <CoolerDetails secondaryPart={secondaryPart} />
                 )}
                 {mainPart.type === "psu" && (
-                  <GPUdetails secondaryPart={secondaryPart} />
+                  <PSUDetails secondaryPart={secondaryPart} />
                 )}
               </TableCell>
             </TableRow>

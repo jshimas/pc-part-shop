@@ -9,32 +9,32 @@ import {
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function createData(socketStandart, frequancy, coreQuantity, threadQuantity) {
-  return { socketStandart, frequancy, coreQuantity, threadQuantity };
+function createData(readSpeed, writeSpeed, capacity, connectorType) {
+  return { readSpeed, writeSpeed, capacity, connectorType };
 }
 
-export default function AddCPU({ handleChange, setSecondaryPart }) {
+export default function AddExternalMemory({ setSecondaryPart }) {
   const [partData, setPartData] = useState(null);
-  const [socketStandart, setSocketStandart] = useState(null);
-  const [frequancy, setfrequancy] = useState(null);
-  const [coreQuantity, setcoreQuantity] = useState(null);
-  const [threadQuantity, setthreadQuantity] = useState(null);
+  const [readSpeed, setreadSpeed] = useState(null);
+  const [writeSpeed, setwriteSpeed] = useState(null);
+  const [capacity, setcapacity] = useState(null);
+  const [connectorType, setconnectorType] = useState(null);
   //var partData;
 
   const handleInternalChange = async (event) => {
     try {
       switch (event.target.id) {
-        case "socket":
-          setSocketStandart(event.target.value);
+        case "read":
+          setreadSpeed(event.target.value);
           break;
-        case "frequency":
-          setfrequancy(event.target.value);
+        case "write":
+          setwriteSpeed(event.target.value);
           break;
-        case "core":
-          setcoreQuantity(event.target.value);
+        case "capacity":
+          setcapacity(event.target.value);
           break;
-        case "thread":
-          setthreadQuantity(event.target.value);
+        case "connector":
+          setconnectorType(event.target.value);
           break;
         default:
           break;
@@ -46,7 +46,7 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
   useEffect(() => {
     const setData = () => {
       setSecondaryPart(
-        createData(socketStandart, frequancy, coreQuantity, threadQuantity)
+        createData(readSpeed, writeSpeed, capacity, connectorType)
       );
     };
     setData();
@@ -68,8 +68,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="socket"
-          label="Socket Standart"
+          id="read"
+          label="Read Speed"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -78,8 +78,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="frequency"
-          label="Frequency"
+          id="write"
+          label="Write Speed"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -88,8 +88,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="core"
-          label="Core Quantity"
+          id="capacity"
+          label="Capacity"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);
@@ -98,8 +98,8 @@ export default function AddCPU({ handleChange, setSecondaryPart }) {
         <TextField
           sx={{ mt: 3 }}
           hiddenLabel
-          id="thread"
-          label="Thread Quantity"
+          id="connector"
+          label="Connector type"
           variant="filled"
           onChange={(event) => {
             handleInternalChange(event);

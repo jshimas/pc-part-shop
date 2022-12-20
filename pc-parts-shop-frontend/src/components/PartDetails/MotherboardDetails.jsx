@@ -35,6 +35,7 @@ export default function CPUdetails({ secondaryPart }) {
     };
     handleRamType();
     handlePCIeType();
+    console.log(secondaryPart.pcieStandartEnum);
   });
   return (
     <TableContainer>
