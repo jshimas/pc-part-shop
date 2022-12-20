@@ -80,7 +80,7 @@ export default function ProfilePage() {
         mt: 10,
       }}
       >
-        <Profile name="test" surname="test" email="test@test.com" phone="868686868" birthdate="2022/01/01"/>
+        <Profile/>
       </Box>
     </div>
   );
